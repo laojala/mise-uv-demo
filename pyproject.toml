@@ -12,7 +12,7 @@ mise-uv-demo = "mise_uv_demo:main"
 dev = ["pytest>=9,<10"]
 
 [build-system]
-requires = ["uv_build>=0.12.18,<0.13.0"]
+requires = ["uv_build>=0.12.18,<1"]
 build-backend = "uv_build"
 
 [tool.pytest.ini_options]
