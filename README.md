@@ -30,14 +30,15 @@ git clone https://github.com/laojala/mise-uv-demo.git
 cd mise-uv-demo
 ```
 
-Read `mise.toml`, then:
+Read `mise.toml` and `older-python/mise.toml`, then:
 
 ```sh
 mise trust
 mise install
 ```
 
-The postinstall hook runs `uv sync --locked`, including on repeat installs.
+The postinstall hook runs `uv sync --locked` and installs the child folder's tools,
+including on repeat installs.
 At the next shell prompt, `.venv/bin/python` is active. Try:
 
 ```sh
@@ -54,7 +55,7 @@ mise run fmt
 | `[tools]` | Installs Python 3.14, uv and an isolated Ruff CLI | pyenv and manual CLI installs |
 | `[settings]` | Creates/sources uv's `.venv` on entry; restores the shell on exit | `python -m venv` and manual activation |
 | `[env]` | Points uv at mise's Python and sets `APP_GREETING` within the project | direnv / `.envrc` |
-| `[hooks]` | Syncs the package, Rich and pytest from `uv.lock` after installation | Manual dependency installation |
+| `[hooks]` | Syncs locked dependencies and installs the child folder’s tools | Manual dependency installation |
 | `[tasks.*]` | Names the test, lint, format and hello commands | Makefile |
 
 uv owns application dependencies; mise owns tools and the shell environment.
@@ -62,6 +63,23 @@ Ruff runs from mise's isolated PyPI tool environment, outside the project venv.
 CI uses the same config through `jdx/mise-action`, with both actions pinned to
 full commit SHAs.
 
-See [the before slide](docs/before.md) and [the stage script](demo.md).
+## Switch Python versions
+
+The root selects Python 3.14; setup also installs the child folder’s Python 3.13.
+Run each command at its own prompt:
+
+```sh
+python --version           # 3.14.x, in the project venv
+cd older-python
+python --version           # 3.13.x
+cd ..
+python --version           # 3.14.x, back in the project venv
+```
+
+The child inherits uv, Ruff and `APP_GREETING`. It overrides Python and disables
+the root venv activation so the selected interpreter is visible. Run package
+tasks from the root.
+
+See [the before slide](docs/before.md) and [personal demo notes](demo.md).
 The config follows the current [Python docs](https://mise.jdx.dev/lang/python.html)
 and [Python cookbook](https://mise.jdx.dev/mise-cookbook/python.html).

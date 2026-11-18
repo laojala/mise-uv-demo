@@ -1,0 +1,6 @@
+[tools]
+python = "3.13"
+
+[settings]
+# Use this interpreter instead of inheriting the root project's venv.
+python.uv_venv_auto = false

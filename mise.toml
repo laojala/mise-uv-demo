@@ -11,7 +11,10 @@ UV_PYTHON = { value = "{{ tools.python.path }}", tools = true }
 APP_GREETING = "Hello from mise!"
 
 [hooks]
-postinstall = "uv sync --locked"
+postinstall = [
+  'mise -C "{{ config_root }}" exec -- uv sync --locked',
+  'mise -C "{{ config_root }}/older-python" install',
+]
 
 [tasks.test]
 run = "uv run pytest"
