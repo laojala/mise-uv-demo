@@ -1,0 +1,26 @@
+[tools]
+python = "3.14"
+uv = "latest"
+"pypi:ruff" = "latest"
+
+[settings]
+python.uv_venv_auto = "create|source"
+
+[env]
+UV_PYTHON = { value = "{{ tools.python.path }}", tools = true }
+APP_GREETING = "Hello from mise!"
+
+[hooks]
+postinstall = "uv sync --locked"
+
+[tasks.test]
+run = "uv run pytest"
+
+[tasks.lint]
+run = "ruff check ."
+
+[tasks.fmt]
+run = "ruff format ."
+
+[tasks.hello]
+run = "uv run mise-uv-demo"
