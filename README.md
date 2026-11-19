@@ -46,17 +46,22 @@ mise run test
 mise run lint
 mise run hello
 mise run fmt
+mise run app
 ```
+
+`mise run app` opens the word counter at http://localhost:8501. Edit the text
+to update the counts; press Ctrl+C in the terminal to stop the server.
 
 ## How it works
 
 | Block in `mise.toml` | Job | Replaces |
 | --- | --- | --- |
 | `[tools]` | Installs Python 3.14, uv and an isolated Ruff CLI | pyenv and manual CLI installs |
+| `[tools]`: Node and Terraform | Installs Node LTS for the frontend and Terraform for the cloud | nvm and manual Terraform installation |
 | `[settings]` | Creates/sources uv's `.venv` on entry; restores the shell on exit | `python -m venv` and manual activation |
 | `[env]` | Points uv at mise's Python and sets `APP_GREETING` within the project | direnv / `.envrc` |
 | `[hooks]` | Syncs locked dependencies and installs the child folder’s tools | Manual dependency installation |
-| `[tasks.*]` | Names the test, lint, format and hello commands | Makefile |
+| `[tasks.*]` | Names the test, lint, format, hello and app commands | Makefile |
 
 uv owns application dependencies; mise owns tools and the shell environment.
 Ruff runs from mise's isolated PyPI tool environment, outside the project venv.

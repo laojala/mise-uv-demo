@@ -3,7 +3,10 @@ name = "mise-uv-demo"
 version = "0.1.0"
 description = "Smooth project setup with mise and uv"
 requires-python = ">=3.14"
-dependencies = ["rich>=14.2.0,<15"]
+dependencies = [
+    "rich>=14.2.0,<15",
+    "streamlit>=1.67.0",
+]
 
 [project.scripts]
 mise-uv-demo = "mise_uv_demo:main"

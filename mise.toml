@@ -2,6 +2,8 @@
 python = "3.14"
 uv = "latest"
 "pypi:ruff" = "latest"
+node = "lts"            # the frontend
+terraform = "latest"    # the cloud
 
 [settings]
 python.uv_venv_auto = "create|source"
@@ -27,3 +29,6 @@ run = "ruff format ."
 
 [tasks.hello]
 run = "uv run mise-uv-demo"
+
+[tasks.app]
+run = "uv run streamlit run src/mise_uv_demo/app.py"

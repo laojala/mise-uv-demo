@@ -8,6 +8,8 @@ git clone https://github.com/laojala/mise-uv-demo.git
 cd mise-uv-demo
 mise trust
 mise install
+node --version
+terraform version
 
 mise run hello                # Hello from mise! + word counts
 python --version              # 3.14.x
@@ -19,6 +21,7 @@ python --version              # 3.14.x
 
 mise run test
 mise run lint
+mise run app                  # http://localhost:8501; Ctrl+C to stop
 ```
 
 Show `docs/before.md`, both `mise.toml` files, `uv.lock` and CI.
