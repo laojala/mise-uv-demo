@@ -248,69 +248,68 @@ body.presenter #pv {
   body.presenter #pv { top: calc(40vh + 32px); width: auto; right: 16px; }
 }
 
-/* Phones use the same content in a readable, scrollable slide view. */
-body.mobile #stage { overflow-y: auto; overflow-x: hidden; touch-action: auto; -webkit-overflow-scrolling: touch; }
-body.mobile #world { position: static; width: 100%; height: auto; min-height: 100%; box-sizing: border-box; transform: none !important; background-image: none; padding: max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(100px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
-body.mobile #world > :not(.mobile-active):not(.mobile-path),
-body.mobile .mobile-path > :not(.mobile-active):not(.mobile-path) { display: none !important; }
-body.mobile #world .mobile-path { display: block; position: static; width: auto; height: auto; transform: none; background: transparent !important; box-shadow: none; padding: 0 !important; margin: 0 !important; border: 0 !important; }
-body.mobile #world .frame, body.mobile #world .sect, body.mobile #world .editor,
-body.mobile #world #file-area { position: static !important; width: 100% !important; height: auto !important; transform: none !important; box-sizing: border-box; }
-body.mobile #world .frame { padding: 26px 22px; gap: 20px; border-radius: 18px; box-shadow: none; cursor: auto; }
-body.mobile #world .frame h1 { font-size: clamp(34px, 9vw, 46px); line-height: 1.08; }
-body.mobile #world .frame h2, body.mobile #file-area .headline { position: static; width: auto; font-size: 30px; line-height: 1.15; }
-body.mobile #world .frame h3 { font-size: 21px; }
-body.mobile #world .frame p, body.mobile #world .frame li { font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }
-body.mobile #world .frame .lead { font-size: 21px; }
-body.mobile #world .frame .small, body.mobile #world .frame .credit { font-size: 13px !important; }
-body.mobile #world .frame .eyebrow { font-size: 12px; line-height: 1.4; }
-body.mobile #world .spacer, body.mobile #world .region-label { display: none; }
-body.mobile #world .row, body.mobile #world .os-row { display: flex; flex-direction: column; gap: 20px; }
-body.mobile #world .col { flex: auto !important; width: 100%; gap: 20px !important; }
-body.mobile #world .cards, body.mobile #world .links { grid-template-columns: 1fr !important; gap: 14px; }
-body.mobile #world .card { padding: 18px; gap: 8px; }
-body.mobile #world .frame .card p { font-size: 15px; }
-body.mobile #world .term { width: 100% !important; box-sizing: border-box; padding: 18px 14px; overflow-x: auto; }
-body.mobile #world .term p { font-size: 13px; line-height: 1.6; overflow-wrap: normal; }
-body.mobile #world .term-label { font-size: 12px; }
-body.mobile #world .tbl { display: block; width: 100%; max-width: 100%; overflow-x: auto; font-size: 14px; }
-body.mobile #world .tbl th { font-size: 11px; }
-body.mobile #world .tbl td { padding: 10px 8px; }
-body.mobile #world .tbl .yr, body.mobile #world .tbl .cmd { font-size: 12px; }
-body.mobile #world .slot, body.mobile #world .yaml-joke { flex: auto; }
-body.mobile #world .slot img, body.mobile #world .yaml-joke img { width: 100%; height: auto; }
-body.mobile #world video { flex: none !important; width: 100%; aspect-ratio: 16 / 9; }
-body.mobile #world .os-logo { width: 100%; max-width: 420px; }
-body.mobile #world .os-text { gap: 16px; }
-body.mobile #world .frame.os { border-width: 3px; padding: 24px 20px; }
-body.mobile #world .frame .os-line { font-size: 25px; }
-body.mobile #world .frame .os-join { font-size: 16px; padding: 14px 18px; }
-body.mobile #world .bars { grid-template-columns: minmax(0, 1fr) auto; gap: 16px; }
-body.mobile #world .bar-track { display: none; }
-body.mobile #world .bar-name .nm { font-size: 24px !important; }
-body.mobile #world .bar-name .since, body.mobile #world .bar-num-wrap .contrib { font-size: 12px !important; }
-body.mobile #world .bar-num { font-size: 28px !important; }
-body.mobile #world .editor { padding: 16px; border-width: 1px; border-radius: 16px; box-shadow: none; }
-body.mobile #world .sect { display: flex; flex-direction: column; gap: 18px; margin: 24px 0; }
-body.mobile #world .code { width: 100%; overflow-x: auto; }
-body.mobile #world .ln { font-size: 13px; line-height: 24px; }
-body.mobile #world .ln::before { width: 24px; padding-right: 10px; }
-body.mobile #world .tabbar { height: auto; padding-left: 0; }
-body.mobile #world .tab { font-size: 16px; padding: 12px; border-width: 1px; gap: 10px; }
-body.mobile #world .tab::before { width: 10px; height: 10px; }
-body.mobile #world .headline { margin: 0 0 20px; }
+/* Phones read the slides as one vertical flow; Overview opens the zoomable canvas. */
+body.flow #stage { overflow-y: auto; overflow-x: hidden; touch-action: auto; -webkit-overflow-scrolling: touch; }
+body.flow #world { position: static; display: flex; flex-direction: column; gap: 20px; width: 100%; height: auto; min-height: 100%; box-sizing: border-box; transform: none !important; background-image: none; padding: max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(100px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+body.flow #world .frame, body.flow #world .sect, body.flow #world .editor,
+body.flow #world #file-area { position: static !important; width: 100% !important; height: auto !important; transform: none !important; box-sizing: border-box; }
+body.flow #world .frame { padding: 26px 22px; gap: 20px; border-radius: 18px; box-shadow: none; cursor: auto; }
+body.flow #world .frame h1 { font-size: clamp(34px, 9vw, 46px); line-height: 1.08; }
+body.flow #world .frame h2, body.flow #file-area .headline { position: static; width: auto; font-size: 30px; line-height: 1.15; }
+body.flow #world .frame h3 { font-size: 21px; }
+body.flow #world .frame p, body.flow #world .frame li { font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }
+body.flow #world .frame .lead { font-size: 21px; }
+body.flow #world .frame .small, body.flow #world .frame .credit { font-size: 13px !important; }
+body.flow #world .frame .eyebrow { font-size: 12px; line-height: 1.4; }
+body.flow #world .spacer { display: none; }
+body.flow #world [data-step] { scroll-margin-top: 12px; }
+body.flow #world .region-label { position: static; font-size: 13px !important; letter-spacing: 0.16em; margin: 16px 4px -4px; }
+body.flow #file-area > .region-label { margin-bottom: 16px; }
+body.flow #world .row, body.flow #world .os-row { display: flex; flex-direction: column; gap: 20px; }
+body.flow #world .col { flex: auto !important; width: 100%; gap: 20px !important; }
+body.flow #world .cards, body.flow #world .links { grid-template-columns: 1fr !important; gap: 14px; }
+body.flow #world .card { padding: 18px; gap: 8px; }
+body.flow #world .frame .card p { font-size: 15px; }
+body.flow #world .term { width: 100% !important; box-sizing: border-box; padding: 18px 14px; overflow-x: auto; }
+body.flow #world .term p { font-size: 13px; line-height: 1.6; overflow-wrap: normal; }
+body.flow #world .term-label { font-size: 12px; }
+body.flow #world .tbl { display: block; width: 100%; max-width: 100%; overflow-x: auto; font-size: 14px; }
+body.flow #world .tbl th { font-size: 11px; }
+body.flow #world .tbl td { padding: 10px 8px; }
+body.flow #world .tbl .yr, body.flow #world .tbl .cmd { font-size: 12px; }
+body.flow #world .slot, body.flow #world .yaml-joke { flex: auto; }
+body.flow #world .slot img, body.flow #world .yaml-joke img { width: 100%; height: auto; }
+body.flow #world video { flex: none !important; width: 100%; aspect-ratio: 16 / 9; }
+body.flow #world .os-logo { width: 100%; max-width: 420px; }
+body.flow #world .os-text { gap: 16px; }
+body.flow #world .frame.os { border-width: 3px; padding: 24px 20px; }
+body.flow #world .frame .os-line { font-size: 25px; }
+body.flow #world .frame .os-join { font-size: 16px; padding: 14px 18px; }
+body.flow #world .bars { grid-template-columns: minmax(0, 1fr) auto; gap: 16px; }
+body.flow #world .bar-track { display: none; }
+body.flow #world .bar-name .nm { font-size: 24px !important; }
+body.flow #world .bar-name .since, body.flow #world .bar-num-wrap .contrib { font-size: 12px !important; }
+body.flow #world .bar-num { font-size: 28px !important; }
+body.flow #world .editor { padding: 16px; border-width: 1px; border-radius: 16px; box-shadow: none; }
+body.flow #world .sect { display: flex; flex-direction: column; gap: 18px; margin: 24px 0; }
+body.flow #world .code { width: 100%; overflow-x: auto; }
+body.flow #world .ln { font-size: 13px; line-height: 24px; }
+body.flow #world .ln::before { width: 24px; padding-right: 10px; }
+body.flow #world .tabbar { height: auto; padding-left: 0; }
+body.flow #world .tab { font-size: 16px; padding: 12px; border-width: 1px; gap: 10px; }
+body.flow #world .tab::before { width: 10px; height: 10px; }
+body.flow #world .headline { margin: 0 0 20px; }
 body.mobile #chrome { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; box-sizing: border-box; padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); background: var(--chrome); border-top: 1px solid var(--editor-edge); opacity: 1 !important; transition: none; }
 body.mobile #chrome .title, body.mobile #btn-notes, body.mobile #btn-full,
 body.mobile #hint, body.mobile #progress { display: none !important; }
-body.mobile #chrome button { min-width: 0; min-height: 44px; padding: 10px 4px; font-size: 13px; white-space: nowrap; }
+body.mobile #chrome button { min-width: 0; text-align: center; min-height: 44px; padding: 10px 4px; font-size: 13px; white-space: nowrap; }
 body.mobile #picker { box-sizing: border-box; left: 12px; right: 12px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); width: auto; max-height: 65dvh; }
 body.mobile .slide-list button { min-height: 48px; font-size: 15px; padding: 12px 10px; }
 body.mobile .slide-list .pick-head { font-size: 12px; margin: 24px 10px 8px; }
-#mobile-overview { padding: max(24px, env(safe-area-inset-top, 0px)) 18px calc(100px + env(safe-area-inset-bottom, 0px)); }
-#mobile-overview h1 { font-size: 30px; margin: 0 10px 18px; }
-body.mobile.reading-overview #world { display: none; }
 body.mobile.presenter #stage { inset: 0; width: auto; height: auto; border: 0; border-radius: 0; }
 body.mobile.presenter #pv { display: none; }
+body.mobile:not(.flow) #world video { pointer-events: none; }
+#canvas-hint { position: fixed; z-index: 6; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); margin: 0; white-space: nowrap; font: 500 14px/1.3 var(--sans); color: var(--on-canvas); background: var(--chrome); border: 1px solid var(--editor-edge); border-radius: 999px; padding: 8px 14px; pointer-events: none; }
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
   .bar { animation: none; }
 }
@@ -740,7 +739,6 @@ body.mobile.presenter #pv { display: none; }
   </section>
 
 </div>
-<section id="mobile-overview" hidden><h1>Slides</h1><nav id="mobile-slides" class="slide-list" aria-label="Slides"></nav></section>
 </div>
 
 <div id="pv" aria-live="polite">
@@ -754,6 +752,7 @@ body.mobile.presenter #pv { display: none; }
 <div id="notes" hidden><h2>Speaker notes</h2><p id="notes-text"></p></div>
 <div id="hint"><kbd>→</kbd> next · <kbd>←</kbd> back · <kbd>O</kbd> overview · <kbd>N</kbd> notes · <kbd>F</kbd> fullscreen · <kbd>12</kbd><kbd>↵</kbd> jump</div>
 <div id="progress"></div>
+<p id="canvas-hint" hidden>Pinch to zoom · tap a slide to read it</p>
 <div id="picker" class="slide-list" hidden aria-label="Jump to a stop"></div>
 <div id="chrome">
   <span class="title" id="chrome-title"></span>
@@ -801,12 +800,15 @@ body.mobile.presenter #pv { display: none; }
   const stage = document.getElementById('stage');
   const world = document.getElementById('world');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = window.matchMedia('(max-width: 800px), (pointer: coarse)');
   document.body.classList.toggle('mobile', mobile.matches);
+  document.body.classList.toggle('flow', mobile.matches);
   const presenter = new URLSearchParams(location.hash.slice(1)).has('presenter');
   if (presenter) document.body.classList.add('presenter');
 
-  let idx = 0, cam = null, raf = 0, overview = false, detour = null, renderedView = null;
+  let idx = 0, cam = null, raf = 0, overview = false, detour = null;
+  const flowMode = () => mobile.matches && !overview;
 
   function worldRect(id) {
     if (id === '__all') return { x: 0, y: 0, w: world.offsetWidth, h: world.offsetHeight };
@@ -871,6 +873,8 @@ body.mobile.presenter #pv { display: none; }
   const progress = document.getElementById('progress');
   const notesBox = document.getElementById('notes');
   const notesText = document.getElementById('notes-text');
+  const canvasHint = document.getElementById('canvas-hint');
+  const btnOver = document.getElementById('btn-over');
 
   const QUESTIONS = [
     { id: 'f-setups', title: 'Do I need uv? Three setups' },
@@ -878,8 +882,9 @@ body.mobile.presenter #pv { display: none; }
   ];
   function sideTrip(id, opts) {
     detour = id; overview = false;
-    if (!mobile.matches) fly(fit(worldRect(id), 1.08), opts && opts.instant);
     render();
+    if (mobile.matches) scrollToStep(id, opts && opts.instant);
+    else fly(fit(worldRect(id), 1.08), opts && opts.instant);
     if (!opts || !opts.remote) broadcast();
   }
   const picker = document.getElementById('picker');
@@ -920,23 +925,12 @@ body.mobile.presenter #pv { display: none; }
     return overview ? 'overview' : 'slide=' + encodeURIComponent(detour || STEPS[idx].id);
   }
   function render() {
-    const view = currentView();
     document.body.classList.toggle('mobile', mobile.matches);
-    document.body.classList.toggle('reading-overview', mobile.matches && overview);
-    world.querySelectorAll('.mobile-active, .mobile-path').forEach(el => el.classList.remove('mobile-active', 'mobile-path'));
-    const list = document.getElementById('mobile-overview');
-    list.hidden = !mobile.matches || !overview;
-    if (mobile.matches) {
-      if (overview) buildPicker(document.getElementById('mobile-slides'));
-      else {
-        const active = document.getElementById(detour || STEPS[idx].id);
-        active.classList.add('mobile-active');
-        for (let parent = active.parentElement; parent !== world; parent = parent.parentElement) parent.classList.add('mobile-path');
-      }
-      if (view !== renderedView) stage.scrollTop = 0;
-      closePicker();
-    }
-    renderedView = view;
+    document.body.classList.toggle('flow', flowMode());
+    canvasHint.hidden = flowMode() || !mobile.matches;
+    btnOver.textContent = mobile.matches && overview ? 'Close' : 'Overview';
+    btnOver.setAttribute('aria-pressed', String(overview));
+    if (mobile.matches) closePicker();
     const s = STEPS[idx];
     if (overview || detour || s.id !== 'f-demo') document.querySelectorAll('video').forEach(video => video.pause());
     const title = overview ? 'Overview' : detour ? (QUESTIONS.find(q => q.id === detour)?.title || 'Details') : s.title;
@@ -957,17 +951,89 @@ body.mobile.presenter #pv { display: none; }
     idx = Math.max(0, Math.min(STEPS.length - 1, i));
     overview = false; detour = null;
     const id = STEPS[idx].id;
-    if (!mobile.matches) fly(fit(worldRect(id), id === '__all' ? 1.02 : 1.08), opts.instant);
     render();
+    if (mobile.matches) { if (!opts.fromScroll) scrollToStep(id, opts.instant); }
+    else fly(fit(worldRect(id), 1.08), opts.instant);
     if (!opts.remote) broadcast();
   }
   function toggleOverview(opts) {
-    if (overview) { go(idx, opts); return; }
+    if (overview) { go(idx, Object.assign({ instant: mobile.matches }, opts)); return; }
     overview = true; detour = null;
-    if (!mobile.matches) fly(fit(worldRect('__all'), 1.02), opts && opts.instant);
     render();
+    const all = fit(worldRect('__all'), 1.02);
+    if (mobile.matches) { cam = all; apply(cam); }
+    else fly(all, opts && opts.instant);
     if (!opts || !opts.remote) broadcast();
   }
+
+  // Phone flow: scrolling picks the current slide; buttons and links scroll to one.
+  let scrollLock = false, scrollIdleT = 0, scrollRaf = 0;
+  function releaseLockSoon() { clearTimeout(scrollIdleT); scrollIdleT = setTimeout(() => { scrollLock = false; }, 160); }
+  function scrollToStep(id, instant) {
+    const el = document.getElementById(id);
+    const top = el.getBoundingClientRect().top - stage.getBoundingClientRect().top + stage.scrollTop - 12;
+    scrollLock = true;
+    stage.scrollTo({ top: Math.max(0, top), behavior: instant || reduceMotion ? 'auto' : 'smooth' });
+    releaseLockSoon();
+  }
+  function stepFromScroll() {
+    if (stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 2) return STEPS.length - 1;
+    const line = stage.getBoundingClientRect().top + stage.clientHeight * 0.3;
+    let at = 0;
+    STEPS.forEach((s, i) => { if (document.getElementById(s.id).getBoundingClientRect().top <= line) at = i; });
+    return at;
+  }
+  stage.addEventListener('scroll', () => {
+    if (!flowMode()) return;
+    if (scrollLock) { releaseLockSoon(); return; }
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0;
+      const at = stepFromScroll();
+      if (at !== idx || detour) go(at, { fromScroll: true });
+    });
+  }, { passive: true });
+
+  // Phone canvas: one finger pans, two fingers zoom, a tap opens that slide in the flow.
+  const touches = new Map();
+  let gesture = null;
+  function gestureState() {
+    const pts = [...touches.values()];
+    const mx = pts.reduce((a, p) => a + p.x, 0) / pts.length, my = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+    const d = pts.length > 1 ? Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) : 0;
+    return { mx, my, d };
+  }
+  stage.addEventListener('pointerdown', e => {
+    if (!mobile.matches || !overview || !cam) return;
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    gesture = Object.assign(gestureState(), { tap: touches.size === 1, x0: e.clientX, y0: e.clientY, target: e.target });
+  });
+  stage.addEventListener('pointermove', e => {
+    if (!gesture || !touches.has(e.pointerId)) return;
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const g = gestureState(), r = stage.getBoundingClientRect(), vw = stage.clientWidth, vh = stage.clientHeight;
+    if (Math.hypot(e.clientX - gesture.x0, e.clientY - gesture.y0) > 10) gesture.tap = false;
+    const k = vw / cam.w;
+    const wx = cam.x + (gesture.mx - r.left - vw / 2) / k, wy = cam.y + (gesture.my - r.top - vh / 2) / k;
+    const f = gesture.d && g.d ? g.d / gesture.d : 1;
+    const w = Math.min(world.offsetWidth * 1.6, Math.max(500, cam.w / f)), k2 = vw / w;
+    cam = { x: wx - (g.mx - r.left - vw / 2) / k2, y: wy - (g.my - r.top - vh / 2) / k2, w };
+    apply(cam);
+    Object.assign(gesture, g);
+  });
+  function endTouch(e) {
+    if (!gesture || !touches.has(e.pointerId)) return;
+    touches.delete(e.pointerId);
+    const tapped = gesture.tap && e.type === 'pointerup' && touches.size === 0 ? gesture.target : null;
+    gesture = touches.size ? Object.assign(gestureState(), { tap: false }) : null;
+    const el = tapped && tapped.closest('[data-step]');
+    if (!el) return;
+    if (stepIndexById[el.id] !== undefined) go(stepIndexById[el.id], { instant: true });
+    else sideTrip(el.id, { instant: true });
+  }
+  stage.addEventListener('pointerup', endTouch);
+  stage.addEventListener('pointercancel', endTouch);
 
   // Keep presenter and audience windows on the same view of this deck.
   const syncKey = 'zoom-deck:' + location.pathname.replace(/\/index\.html$/, '/');
@@ -1038,7 +1104,7 @@ body.mobile.presenter #pv { display: none; }
   });
   let tx = null, ty = null;
   stage.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1 || e.target.closest('.code, .term, .tbl, video, a, button')) { tx = ty = null; return; }
+    if (!flowMode() || e.touches.length !== 1 || e.target.closest('.code, .term, .tbl, video, a, button')) { tx = ty = null; return; }
     const t = e.touches[0]; tx = t.clientX; ty = t.clientY;
   }, { passive: true });
   stage.addEventListener('touchend', e => {
@@ -1075,10 +1141,16 @@ body.mobile.presenter #pv { display: none; }
 
 
 
+  let wasMobile = mobile.matches;
   function resize() {
     cancelAnimationFrame(raf);
     render();
-    if (mobile.matches) { cam = null; return; }
+    const entered = mobile.matches && !wasMobile;
+    wasMobile = mobile.matches;
+    if (flowMode()) {
+      if (entered) scrollToStep(detour || STEPS[idx].id, true);
+      cam = null; return;
+    }
     stage.scrollTop = stage.scrollLeft = 0;
     const id = overview ? '__all' : (detour || STEPS[idx].id);
     cam = fit(worldRect(id), id === '__all' ? 1.02 : 1.08);
@@ -1105,6 +1177,7 @@ body.mobile.presenter #pv { display: none; }
   if (resumePresenter) {
     try { receive(JSON.parse(localStorage.getItem(syncKey))); } catch (e) {}
   }
+  window.addEventListener('load', () => { if (flowMode()) scrollToStep(detour || STEPS[idx].id, true); });
   wake();
 })();
 </script>
