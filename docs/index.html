@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important} img{max-width:100%}
+/* CI slide: retain the deck typography while fitting the three short points. */
+#f-runtime .point h3 { font-size: 32px; }
+#f-runtime .point p { font-size: 27px; line-height: 1.35; }
+#f-runtime .term p { font-size: 25px; }
+.yaml-joke { flex: 1; justify-content: center; }
+.yaml-joke p { font-size: 34px !important; }
+</style>
+<title>mise and uv Zoom Deck — fact-checked</title>
+<style>
+@font-face { font-family: 'Roboto Flex'; font-style: normal; font-display: block; font-weight: 100 1000; font-stretch: 25% 151%; src: url(assets/roboto-flex.woff2) format('woff2'); }
+@font-face { font-family: 'Roboto Mono'; font-style: normal; font-display: block; font-weight: 100 700; src: url(assets/roboto-mono.woff2) format('woff2'); }
+</style>
+<style>
+/* Layout: one huge canvas. Left = before, centre = a giant mise.toml whose blocks hold small nested frames, right = in practice. A camera flies between them. */
+:root {
+  color-scheme: dark;
+  --canvas: #0d3b42;        /* deep teal */
+  --canvas-dot: rgba(126, 224, 195, 0.12);
+  --on-canvas: #f3faf8;
+  --on-canvas-soft: #d4ede7;
+  --label: #7ee0c3;
+  --paper: #f5f9f8;
+  --paper-2: #e2eeeb;
+  --rule: #cddcd8;
+  --ink: #132226;
+  --ink-soft: #44555a;
+  --accent: #0a7466;        /* teal on paper */
+  --accent-light: #7ee0c3;  /* mint on dark */
+  --key: #ffd166;           /* sunflower: TOML headers, bars, highlights */
+  --editor: #082a30;
+  --editor-edge: #1f5a62;
+  --code: #e8f6f3;
+  --code-str: #b5ecc9;
+  --code-cmt: #84b8ae;
+  --code-ln: #3a6b70;
+  --chrome: rgba(8, 42, 48, 0.92);
+  --sans: 'Roboto Flex', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --mono: 'Roboto Mono', 'SFMono-Regular', Menlo, Consolas, 'Courier New', monospace;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--canvas); color: var(--on-canvas); font-family: var(--sans); overflow: hidden; }
+
+#stage { position: fixed; inset: 0; overflow: hidden; background: var(--canvas); touch-action: none; }
+#world {
+  position: absolute; left: 0; top: 0; width: 11700px; height: 6950px; transform-origin: 0 0;
+  background-image: radial-gradient(circle, var(--canvas-dot) 3px, transparent 3.6px);
+  background-size: 120px 120px;
+}
+
+/* Canvas text */
+.region-label { position: absolute; font: 600 72px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--label); margin: 0; }
+.headline { position: absolute; left: 0; top: 130px; width: 3200px; margin: 0; font: 760 128px/1.08 var(--sans); font-variation-settings: 'wdth' 110; color: var(--on-canvas); text-wrap: balance; }
+.headline code { font-family: var(--mono); font-weight: 600; color: var(--key); }
+
+/* Frames: designed at 1600x900, scaled by --s */
+.frame {
+  position: absolute; width: 1600px; height: 900px; box-sizing: border-box;
+  transform: scale(var(--s, 1)); transform-origin: 0 0;
+  background: var(--paper); color: var(--ink); border-radius: 28px;
+  padding: 84px 96px; display: flex; flex-direction: column; gap: 32px;
+  box-shadow: 0 30px 90px rgba(0, 16, 18, 0.45);
+  cursor: pointer;
+}
+.frame.bare { background: transparent; box-shadow: none; color: var(--on-canvas); }
+.frame h1, .frame h2, .frame h3, .frame p { margin: 0; }
+.eyebrow { font: 600 26px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.frame.bare .eyebrow { color: var(--accent-light); }
+.frame h2 { font: 760 66px/1.08 var(--sans); font-variation-settings: 'wdth' 108; color: var(--ink); text-wrap: balance; }
+.frame p { font: 400 32px/1.4 var(--sans); color: var(--ink-soft); max-width: 1320px; }
+.frame .lead { font-size: 40px; color: var(--ink); font-weight: 500; }
+.frame .small { font-size: 24px; }
+.mono { font-family: var(--mono); }
+.spacer { flex: 1; }
+
+.cards { display: grid; gap: 24px; grid-template-columns: repeat(3, 1fr); }
+.cards.two { grid-template-columns: 1fr 1fr; }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+.card { background: var(--paper-2); border-radius: 18px; padding: 30px 32px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.card .tag { font: 600 24px/1.2 var(--mono); color: var(--accent); }
+.card h3 { font: 700 36px/1.15 var(--sans); color: var(--ink); }
+.card p { font-size: 27px; line-height: 1.35; }
+
+.tbl { width: 100%; border-collapse: collapse; font: 400 29px/1.3 var(--sans); color: var(--ink-soft); }
+.tbl th { text-align: left; font: 600 24px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); padding: 0 16px 14px 0; border-bottom: 2px solid var(--ink); }
+.tbl td { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); }
+.tbl td:first-child { color: var(--ink); font-weight: 600; }
+
+.tl { display: grid; grid-template-columns: 150px repeat(4, 1fr); gap: 20px; align-items: stretch; }
+.tl-name { font: 700 40px/1 var(--mono) !important; color: var(--ink) !important; align-self: center; }
+.tl-cell { border-top: 4px solid var(--accent); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.tl-cell .tag { font: 600 24px/1.2 var(--mono); color: var(--accent); }
+.tl-cell p:not(.tag) { font-size: 27px; line-height: 1.35; }
+.stars { display: flex; align-items: baseline; gap: 28px; }
+.stars .big { font: 800 260px/0.9 var(--sans) !important; font-variation-settings: 'wdth' 112; color: var(--on-canvas) !important; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.stars svg { width: 150px; height: 150px; flex: none; align-self: center; }
+.term { background: var(--canvas); border-radius: 16px; padding: 30px 36px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.term p { font: 400 29px/1.45 var(--mono); color: var(--code); max-width: none; white-space: pre; }
+.term .c { color: var(--accent-light); }
+.term .p { color: var(--key); }
+.term .o { color: var(--code-str); }
+.term-label { font: 600 24px/1 var(--mono); color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
+.row { display: flex; gap: 48px; align-items: stretch; }
+.col { flex: 1; display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.point h3 { font: 700 36px/1.15 var(--sans); color: var(--ink); margin: 0 0 6px; }
+
+/* Cover and thanks on the canvas */
+.frame.bare h1 { font: 800 136px/1.02 var(--sans); font-variation-settings: 'wdth' 112; color: var(--on-canvas); text-wrap: balance; }
+.frame.bare p { color: var(--on-canvas-soft); }
+.frame.bare .lead { color: var(--on-canvas); }
+.frame a { color: inherit; text-decoration: underline; text-decoration-color: var(--label); text-decoration-thickness: 3px; text-underline-offset: 8px; }
+.frame a:hover { text-decoration-color: var(--key); }
+.frame a:focus-visible { outline: 4px solid var(--key); outline-offset: 4px; border-radius: 4px; }
+.frame.bare .disclaimer { font-size: 26px; color: var(--on-canvas-soft); margin-top: 8px; }
+.frame.bare h1.touch { font-size: 104px; line-height: 1.02; }
+.frame.bare h1.statement { font-size: 104px; line-height: 1.08; }
+.frame.bare .quote { font: 600 60px/1.3 var(--sans); color: var(--on-canvas); max-width: none; text-wrap: pretty; }
+.frame.bare h2 { color: var(--on-canvas); }
+.bars { display: grid; grid-template-columns: 310px 1fr 250px; gap: 22px 32px; align-items: center; flex: 1; align-content: center; }
+.bar-name .nm { font: 700 52px/1 var(--mono) !important; color: var(--on-canvas) !important; }
+.bar-name .since { font: 400 26px/1.3 var(--sans) !important; color: var(--on-canvas-soft) !important; margin-top: 6px !important; }
+.bar-track { height: 52px; }
+.bar { height: 100%; background: var(--key); border-radius: 0 10px 10px 0; animation: grow 900ms cubic-bezier(0.23, 1, 0.32, 1) both; transform-origin: left; }
+.bar.dim { background: var(--accent-light); }
+.bar-gap { grid-column: 1 / -1; height: 2px; background: var(--label); opacity: 0.5; margin: 6px 0; }
+.bar.other { background: var(--on-canvas-soft); }
+.bar-num-wrap { text-align: right; }
+.bar-num-wrap .contrib { font: 400 24px/1.3 var(--sans) !important; color: var(--on-canvas-soft) !important; margin-top: 4px !important; }
+.bar-num { font: 760 56px/1 var(--sans) !important; color: var(--on-canvas) !important; text-align: right; font-variant-numeric: tabular-nums; }
+@keyframes grow { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .bar { animation: none; } }
+.card.what { gap: 18px; padding: 36px 40px; }
+.card.what h3 { font-size: 46px; }
+.card.what ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 12px; }
+.card.what li { font: 400 30px/1.35 var(--sans); color: var(--ink-soft); }
+.frame.os { background: #3cbcfc; color: #10202a; border: 8px solid #10202a; box-shadow: 22px 22px 0 #10202a; align-items: center; justify-content: center; text-align: center; gap: 30px; padding: 64px 84px; }
+.frame.os .os-row { display: flex; gap: 48px; align-items: center; text-align: left; width: 100%; }
+.frame.os .os-text { flex: 1; display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.frame.os .os-logo { width: 820px; height: auto; image-rendering: pixelated; }
+.frame.os .os-line { font: 760 50px/1.15 var(--sans); color: #10202a; max-width: none; text-wrap: balance; }
+.frame.os .os-sub { font: 400 30px/1.4 var(--sans); color: #12313f; max-width: none; }
+.frame.os .os-pun { font: 600 28px/1.3 var(--mono); color: #10202a; max-width: none; }
+.frame.os a { text-decoration-color: #10202a; }
+.frame.os .os-join { font: 600 30px/1 var(--mono); color: #3cbcfc; background: #10202a; padding: 18px 26px; border-radius: 6px; }
+.tbl.alt { font-size: 27px; }
+.tbl.alt td { padding: 10px 16px 10px 0; }
+.tbl .yr { font: 500 21px/1 var(--mono); color: var(--accent); white-space: nowrap; }
+.tbl .cmd { font: 500 22px/1.3 var(--mono); color: var(--ink); }
+.tbl tr.divider td { padding: 22px 0 8px; border-bottom: 2px solid var(--ink-soft); font: 600 20px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.tbl tr.old td { color: var(--ink-soft); }
+.tbl tr.old td:first-child { color: var(--ink-soft); font-weight: 600; }
+#f-onething .lead { font-size: 46px; color: var(--key); max-width: none; }
+.frame.bare .links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.frame.bare .links div { border-top: 3px solid var(--key); padding-top: 18px; }
+.frame.bare .links .tag { font: 600 24px/1 var(--mono); color: var(--key); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+
+/* xkcd slot */
+.slot { flex: 1; min-height: 0; border: 3px dashed #b3bec7; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: var(--paper-2); overflow: hidden; }
+.slot img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.slot.has-img { border: 0; background: transparent; }
+.slot .addbtn { font: 600 28px/1 var(--sans); background: var(--accent); color: #fff; border: 0; border-radius: 12px; padding: 20px 30px; cursor: pointer; }
+.slot .addbtn:focus-visible { outline: 4px solid var(--key); outline-offset: 4px; }
+.slot.has-img .addhint { display: none; }
+.credit { font: 400 24px/1.3 var(--sans) !important; color: var(--ink-soft); }
+
+/* The mise.toml editor */
+#file-area { position: absolute; left: 4100px; top: 300px; width: 3200px; height: 5130px; }
+#file-area > .region-label { left: 0; top: 0; }
+.editor {
+  position: absolute; left: 0; top: 520px; width: 3200px; height: 4610px; box-sizing: border-box;
+  background: var(--editor); border: 3px solid var(--editor-edge); border-radius: 30px;
+  counter-reset: line; box-shadow: 0 40px 120px rgba(0, 16, 18, 0.5);
+}
+.tabbar { height: 104px; border-bottom: 3px solid var(--editor-edge); display: flex; align-items: flex-end; padding-left: 40px; }
+.tab { font: 500 40px/1 var(--mono); color: var(--code); padding: 26px 40px 30px; border: 3px solid var(--editor-edge); border-bottom: 0; border-radius: 16px 16px 0 0; background: var(--canvas); margin-bottom: -3px; display: flex; gap: 20px; align-items: center; }
+.tab::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: var(--key); }
+.sect { position: absolute; left: 100px; width: 3000px; cursor: pointer; }
+.code { width: 1780px; }
+.ln { font: 400 54px/84px var(--mono); color: var(--code); white-space: pre; margin: 0; display: flex; }
+.ln::before { counter-increment: line; content: counter(line); width: 96px; flex: none; text-align: right; padding-right: 40px; color: var(--code-ln); }
+.ln .h { color: var(--key); font-weight: 600; }
+.ln .s { color: var(--code-str); }
+.ln .cm { color: var(--code-cmt); }
+.ln .tc { color: var(--code-cmt); margin-left: 1.2ch; }
+.sect .frame { left: 1848px; --s: 0.72; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45); }
+
+/* Chrome */
+#chrome {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(to top, var(--chrome), transparent);
+  transition: opacity 400ms ease; font: 500 15px/1.3 var(--sans);
+}
+#chrome.idle { opacity: 0; }
+#chrome .title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--on-canvas-soft); }
+#chrome button { font: 600 14px/1 var(--sans); color: var(--on-canvas); background: rgba(126, 224, 195, 0.14); border: 1px solid rgba(126, 224, 195, 0.35); border-radius: 8px; padding: 9px 12px; cursor: pointer; }
+#chrome button:hover { background: rgba(126, 224, 195, 0.26); }
+#chrome button:focus-visible { outline: 3px solid var(--key); outline-offset: 2px; }
+#picker {
+  position: fixed; z-index: 8; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  width: min(360px, calc(100vw - 32px)); max-height: 65vh; overflow: auto; padding: 8px;
+  background: var(--chrome); border: 1px solid var(--editor-edge); border-radius: 12px; display: flex; flex-direction: column; gap: 2px;
+}
+#picker button { display: flex; gap: 12px; align-items: baseline; text-align: left; width: 100%; font: 500 15px/1.3 var(--sans); color: var(--on-canvas); background: none; border: 0; border-radius: 8px; padding: 8px 10px; cursor: pointer; }
+#picker button .n { font: 500 13px/1 var(--mono); color: var(--on-canvas-soft); min-width: 2.2em; text-align: right; font-variant-numeric: tabular-nums; }
+#picker button:hover, #picker button:focus-visible { background: rgba(126, 224, 195, 0.16); outline: none; }
+#picker button[aria-current="true"] { background: rgba(255, 209, 102, 0.18); }
+#picker button[aria-current="true"] .n { color: var(--key); }
+#count { cursor: pointer; }
+#picker .pick-head { margin: 10px 10px 4px; font: 600 12px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); }
+#count { font: 500 14px/1 var(--mono); color: var(--on-canvas-soft); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
+#progress { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--key); z-index: 6; transition: width 500ms ease; }
+
+#notes {
+  position: fixed; z-index: 7; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px)); max-height: 40vh; overflow: auto;
+  background: var(--chrome); border: 1px solid var(--editor-edge); border-radius: 14px; padding: 18px 22px;
+  font: 400 19px/1.5 var(--sans); color: var(--on-canvas);
+}
+#notes h2 { margin: 0 0 6px; font: 600 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); }
+#notes p { margin: 0; max-width: 70ch; }
+
+#hint { position: fixed; z-index: 6; top: calc(16px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); font: 500 14px/1.4 var(--sans); color: var(--on-canvas-soft); background: var(--chrome); border-radius: 10px; padding: 10px 14px; transition: opacity 600ms ease; }
+#hint kbd { font: 600 12px/1 var(--mono); border: 1px solid var(--editor-edge); border-radius: 5px; padding: 2px 6px; }
+
+/* Presenter view: #presenter */
+#pv { display: none; }
+body.presenter #stage { inset: auto; top: 16px; right: 16px; width: 60vw; height: calc(60vw * 9 / 16); border-radius: 12px; border: 1px solid var(--editor-edge); }
+body.presenter #notes, body.presenter #hint, body.presenter #progress { display: none !important; }
+body.presenter #chrome { opacity: 1 !important; }
+body.presenter #pv {
+  display: flex; flex-direction: column; gap: 18px; position: fixed; top: 16px; left: max(16px, env(safe-area-inset-left, 0px));
+  width: calc(40vw - 48px); bottom: 80px; overflow: auto; color: var(--on-canvas);
+}
+#pv .now { font: 700 26px/1.2 var(--sans); }
+#pv .next { font: 500 18px/1.3 var(--sans); color: var(--on-canvas-soft); }
+#pv .pnotes { font: 400 22px/1.5 var(--sans); }
+#pv .timer { font: 600 34px/1 var(--mono); color: var(--key); font-variant-numeric: tabular-nums; }
+#pv .small { font: 400 14px/1.4 var(--sans); color: var(--on-canvas-soft); }
+@media (max-width: 800px) {
+  body.presenter #stage { left: 16px; width: auto; height: 40vh; }
+  body.presenter #pv { top: calc(40vh + 32px); width: auto; right: 16px; }
+}
+</style>
+</head>
+<body>
+
+
+<div id="stage" aria-label="Zooming presentation canvas">
+<div id="world">
+
+  <p class="region-label" style="left:400px; top:300px">Before</p>
+
+  <section class="frame bare" id="f-cover" data-step style="left:400px; top:520px; --s:1">
+    <p class="eyebrow">PyLadies Tampere · 19 November 2026</p>
+    <div class="spacer"></div>
+    <h1>Smooth project setup with mise and uv</h1>
+    <div class="spacer"></div>
+    <p><a href="https://www.linkedin.com/in/lenniojala/" target="_blank" rel="noopener">Lenni Ojala</a> (they/them) · Lead Software Engineer, <a href="https://www.relexsolutions.com/" target="_blank" rel="noopener">RELEX Solutions</a></p>
+  </section>
+
+  <section class="frame" id="f-xkcd" data-step style="left:400px; top:1670px; --s:1">
+    <p class="eyebrow">I’ve been here</p>
+    <h2>Is this your laptop?</h2>
+    <div class="slot has-img"><img src="assets/xkcd-python-environment.png" alt="xkcd 1987, Python Environment: a tangle of Python installs and package managers"></div>
+    <p class="credit"><a href="https://xkcd.com/1987/">“Python Environment” by Randall Munroe</a> · <a href="https://creativecommons.org/licenses/by-nc/2.5/" rel="license">CC BY-NC 2.5</a></p>
+  </section>
+
+  <section class="frame" id="f-tax" data-step style="left:400px; top:3970px; --s:1">
+    <p class="eyebrow">The old way</p>
+    <h2>A new laptop used to mean a long list</h2>
+    <div class="cards">
+      <div class="card"><p class="tag">python.org, pyenv</p><h3>Install Python</h3><p>Pick a version. Maybe compile it.</p></div>
+      <div class="card"><p class="tag">python -m venv</p><h3>Make a virtualenv</h3><p>Activate it in each shell, or use its Python directly.</p></div>
+      <div class="card"><p class="tag">nvm</p><h3>Install Node</h3><p>Because the frontend needs it</p></div>
+      <div class="card"><p class="tag">pip install</p><h3>Install tools</h3><p>Into which Python, again?</p></div>
+      <div class="card"><p class="tag">.env</p><h3>Set variables</h3><p>Copied from a teammate’s message</p></div>
+      <div class="card"><p class="tag">README.md</p><h3>Follow the README</h3><p>Out of date by Friday</p></div>
+    </div>
+  </section>
+
+  <section class="frame" id="f-laptop" data-step style="left:2200px; top:2820px; --s:1">
+    <p class="eyebrow">A couple of months ago: my new laptop</p>
+    <h2>I never installed Node or a single Python by hand</h2>
+    <div class="row">
+      <div class="col">
+        <p class="term-label">What I did install</p>
+        <div class="term">
+          <p><span class="p">$</span> brew install mise</p>
+          <p class="c"># in ~/.zshrc</p>
+          <p>eval "$(mise activate zsh)"</p>
+          <p><span class="p">$</span> mise trust &amp;&amp; mise install</p>
+        </div>
+      </div>
+      <div class="col">
+        <p class="term-label">What I never installed</p>
+        <div class="cards two">
+          <div class="card"><h3>Node</h3><p>mise fetched the version each project asked for</p></div>
+          <div class="card"><h3>Python</h3><p>3.14 here, 3.13 there. mise fetched both.</p></div>
+        </div>
+      </div>
+    </div>
+    <p>mise.toml pins tools. uv.lock locks Python dependencies.</p>
+  </section>
+
+  <section class="frame bare" id="f-stars" data-step style="left:2200px; top:3970px; --s:1">
+    <p class="eyebrow">★ GitHub stars · 19 Nov 2026 · rounded</p>
+    <h2>The new tools caught on fast</h2>
+    <div class="bars">
+      <div class="bar-name"><p class="nm">uv</p><p class="since">since 2024</p></div>
+      <div class="bar-track"><div class="bar" style="width:100.0%"></div></div>
+      <div class="bar-num-wrap"><p class="bar-num">92k</p></div>
+      <div class="bar-name"><p class="nm">mise</p><p class="since">since 2023</p></div>
+      <div class="bar-track"><div class="bar" style="width:39.1%"></div></div>
+      <div class="bar-num-wrap"><p class="bar-num">36k</p></div>
+      <div class="bar-name"><p class="nm">pip</p><p class="since">since 2008</p></div>
+      <div class="bar-track"><div class="bar dim" style="width:10.9%"></div></div>
+      <div class="bar-num-wrap"><p class="bar-num">10k</p></div>
+      <div class="bar-gap"></div>
+      <div class="bar-name"><p class="nm">streamlit</p><p class="since">from Saku’s talk</p></div>
+      <div class="bar-track"><div class="bar other" style="width:50.0%"></div></div>
+      <div class="bar-num-wrap"><p class="bar-num">46k</p></div>
+    </div>
+    <p>Stars measure interest, not usage. pip is widely distributed with Python.</p>
+  </section>
+
+  <section class="frame bare" id="f-hover" data-step style="left:400px; top:2820px; --s:1">
+    <p class="eyebrow">The comic’s hover text</p>
+    <div class="slot has-img"><img src="assets/xkcd-hover-text.png" alt="xkcd hover text: The Python environmental protection agency wants to seal it in a cement chamber, with pictorial messages to future civilizations warning them about the danger of using sudo to install random Python packages."></div>
+    <p><a href="https://xkcd.com/1987/">xkcd 1987 by Randall Munroe</a> · <a href="https://creativecommons.org/licenses/by-nc/2.5/" rel="license">CC BY-NC 2.5</a></p>
+  </section>
+
+  <section class="frame" id="f-cooks" data-step style="left:2200px; top:520px; --s:1">
+    <div class="row" style="flex:1; min-height:0">
+      <div class="col" style="flex:0 0 470px; justify-content:center; gap:28px">
+        <p class="eyebrow">Too many cooks</p>
+        <h2>The old way felt like this</h2>
+        <p class="lead">But there is hope</p>
+        <p>mise is named after mise-en-place: everything in its place before you start cooking</p>      </div>
+      <div class="slot has-img"><img src="assets/overcooked.webp" alt="Overcooked! 2: chefs juggling orders in a busy kitchen"></div>
+    </div>
+  </section>
+
+  <section class="frame" id="f-yaml" data-step style="left:4100px; top:5750px; --s:1">
+    <div class="row" style="flex:1; min-height:0">
+      <div class="col" style="flex:0 0 470px; justify-content:center; gap:28px">
+        <p class="eyebrow">A confession</p>
+        <h2>I used to be a YAML developer</h2>
+        <p class="lead">mise.toml is TOML. No indentation rules to keep track of.</p>
+      </div>
+      <div class="term yaml-joke" aria-label="A YAML snippet whose indentation has gone wrong">
+        <p><span class="c"># mise.yaml (imaginary)</span></p>
+        <p>tools:</p>
+        <p>  python: "3.14"</p>
+        <p>    uv: latest</p>
+        <p>   node: lts     <span class="c"># inside python now?</span></p>
+        <p>  terraform: latest</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="frame" id="f-history" data-step style="left:2200px; top:1670px; --s:1">
+    <p class="eyebrow">New tools, built for speed</p>
+    <h2>What changed while I was away from active Python development</h2>
+    <div class="cards two">
+      <div class="card what">
+        <p class="tag">uv</p>
+        <h3>A much faster pip</h3>
+        <ul>
+          <li>Installs your project’s libraries</li>
+          <li>Locks resolved dependencies in uv.lock</li>
+          <li>Can even install Python itself</li>
+        </ul>
+      </div>
+      <div class="card what">
+        <p class="tag">mise</p>
+        <h3>A version manager for many languages</h3>
+        <ul>
+          <li>Python, Node, Terraform: the right version for each project</li>
+          <li>Runs project commands, like a Makefile</li>
+          <li>One file for a repo with Python, React and more</li>
+        </ul>
+      </div>
+    </div>
+    <p>uv installs your Python libraries. mise installs Python, Node and Terraform, and runs your commands.</p>
+  </section>
+
+  <div id="file-area" data-step>
+    <p class="region-label">One file</p>
+    <h2 class="headline">mise.toml pins tools. uv.lock locks dependencies.</h2>
+    <div class="editor">
+      <div class="tabbar"><div class="tab">mise.toml</div></div>
+
+      <div class="sect" id="s-head" data-step style="top:150px; height:650px">
+        <div class="code">
+          <p class="ln"><span class="cm"># mise.toml, in the repo root</span></p>
+          <p class="ln"><span class="cm"># mise.toml pins tool versions</span></p>
+          <p class="ln"><span class="cm"># uv.lock locks Python dependencies</span></p>
+          <p class="ln"> </p>
+        </div>
+      </div>
+
+      <div class="sect" id="s-tools" data-step style="top:900px; height:650px">
+        <div class="code">
+          <p class="ln"><span class="h">[tools]</span><span class="tc"># exact tool versions</span></p>
+          <p class="ln">python = <span class="s">"3.14.10"</span></p>
+          <p class="ln">uv = <span class="s">"0.11.7"</span></p>
+          <p class="ln"><span class="s">"pypi:ruff"</span> = <span class="s">"0.17.5"</span></p>
+          <p class="ln">node = <span class="s">"26.13.1"</span><span class="tc"># the frontend</span></p>
+          <p class="ln">terraform = <span class="s">"1.17.2"</span><span class="tc"># the cloud</span></p>
+        </div>
+        <section class="frame" id="f-packages" data-step style="top:0">
+          <p class="eyebrow">Packages</p>
+          <h2>uv installs libraries. mise installs tools.</h2>
+          <div class="cards two">
+            <div class="card"><p class="tag">uv add requests</p><h3>Libraries your code imports</h3><p>requests, pandas, fastapi. uv puts them in the project’s venv.</p></div>
+            <div class="card"><p class="tag">"pypi:ruff"</p><h3>Tools you run</h3><p>ruff, pre-commit. Each tool gets an isolated environment; projects select the version.</p></div>
+          </div>
+          <p>This demo downloads precompiled Python. Some libraries may still need build tools.</p>
+        </section>
+      </div>
+
+      <div class="sect" id="s-settings" data-step style="top:1650px; height:1340px">
+        <div class="code">
+          <p class="ln"><span class="h">[settings]</span><span class="tc"># who makes the venv</span></p>
+          <p class="ln">python.uv_venv_auto = <span class="s">"create|source"</span></p>
+          <p class="ln"> </p>
+        </div>
+        <section class="frame" id="f-setups" data-step style="top:0">
+          <p class="eyebrow">Do I need uv?</p>
+          <h2>No. Pick one of three setups.</h2>
+          <div class="cards">
+            <div class="card"><p class="tag">_.python.venv</p><h3>mise only</h3><p>mise creates the venv with python -m venv. Install deps with pip.</p></div>
+            <div class="card"><p class="tag">_.python.venv + uv</p><h3>uv under the hood</h3><p>Same config. mise uses uv to create the venv because it is faster.</p></div>
+            <div class="card"><p class="tag">uv_venv_auto</p><h3>uv owns the project</h3><p>uv manages deps and uv.lock. mise activates the venv on cd.</p></div>
+          </div>
+          <p>This demo uses the third. A postinstall hook syncs dependencies.</p>
+        </section>
+        <section class="frame" id="f-split" data-step style="top:690px">
+          <p class="eyebrow">mise and uv</p>
+          <h2>mise owns the environment. uv owns the packages.</h2>
+          <table class="tbl">
+            <tr><th style="width:42%">Job</th><th style="width:29%">mise</th><th style="width:29%">uv</th></tr>
+            <tr><td>Python interpreter</td><td>Installs pinned versions</td><td>Can, if you let it</td></tr>
+            <tr><td>Virtualenv on cd</td><td>Activates; can create via uv</td><td>Creates</td></tr>
+            <tr><td>Dependencies, uv.lock</td><td>No</td><td>Owns</td></tr>
+            <tr><td>Env variables</td><td>Project environment</td><td>Can load .env files</td></tr>
+            <tr><td>CLI tools</td><td>"pypi:ruff"</td><td>uvx ruff</td></tr>
+          </table>
+        </section>
+      </div>
+
+      <div class="sect" id="s-env" data-step style="top:3090px; height:650px">
+        <div class="code">
+          <p class="ln"><span class="h">[env]</span><span class="tc"># environment variables</span></p>
+          <p class="ln">APP_GREETING = <span class="s">"Hello from mise!"</span></p>
+          <p class="ln"> </p>
+        </div>
+        <section class="frame" id="f-activation" data-step style="top:0">
+          <p class="eyebrow">What happens on cd</p>
+          <h2>The project’s Python switches on when you enter the folder</h2>
+          <div class="row">
+            <div class="col">
+              <p class="term-label">Outside the repo</p>
+              <div class="term">
+                <p><span class="p">$</span> which python</p>
+                <p class="c"># your existing Python,</p>
+                <p class="c"># a mise shim, or not found</p>
+                <p><span class="p">$</span> echo $APP_GREETING</p>
+                <p class="c">(empty)</p>
+              </div>
+            </div>
+            <div class="col">
+              <p class="term-label">Inside the repo</p>
+              <div class="term">
+                <p><span class="p">$</span> which python</p>
+                <p class="o">…/mise-uv-demo/.venv/bin/python</p>
+                <p><span class="p">$</span> echo $APP_GREETING</p>
+                <p class="o">Hello from mise!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="sect" id="s-tasks" data-step style="top:3840px; height:650px">
+        <div class="code">
+          <p class="ln"><span class="h">[tasks.test]</span><span class="tc"># your commands</span></p>
+          <p class="ln">run = <span class="s">"uv run pytest"</span></p>
+          <p class="ln"> </p>
+          <p class="ln"><span class="h">[tasks.lint]</span></p>
+          <p class="ln">run = <span class="s">"ruff check ."</span></p>
+        </div>
+        <section class="frame" id="f-ci" data-step style="top:0">
+          <p class="eyebrow">Tasks</p>
+          <h2>mise can replace the Makefile</h2>
+          <div class="row">
+            <div class="col">
+              <p class="term-label">Before: Makefile</p>
+              <div class="term">
+                <p>test:</p>
+                <p>    uv run pytest</p>
+                <p> </p>
+                <p><span class="p">$</span> make test</p>
+              </div>
+            </div>
+            <div class="col">
+              <p class="term-label">Now: mise.toml</p>
+              <div class="term">
+                <p><span class="p">[tasks.test]</span></p>
+                <p>run = <span class="o">"uv run pytest"</span></p>
+                <p> </p>
+                <p><span class="p">$</span> mise run test</p>
+              </div>
+            </div>
+          </div>
+          <p>The bonus: mise installs Python and uv before the task runs. Share task names across laptops and CI.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <p class="region-label" style="left:7900px; top:300px">In practice</p>
+
+  <section class="frame" id="f-stepzero" data-step style="left:7900px; top:520px; --s:1">
+    <p class="eyebrow">One-time setup</p>
+    <h2>Before you start: install mise once</h2>
+    <div class="row">
+      <div class="term" style="width:780px; flex:none">
+        <p class="c"># once per laptop</p>
+        <p>brew install mise</p>
+        <p class="c"># in ~/.zshrc</p>
+        <p>eval "$(mise activate zsh)"</p>
+        <p class="c"># once per repo</p>
+        <p>mise trust &amp;&amp; mise install</p>
+      </div>
+      <div class="col">
+        <div class="point"><h3>Activation is the magic</h3><p>Without it, no venv on cd</p></div>
+        <div class="point"><h3>Trust is a feature</h3><p>mise won’t run a repo’s config until you approve it</p></div>
+        <div class="point"><h3>Logins stay manual</h3><p>Cloud accounts, VPN, GitHub</p></div>
+      </div>
+    </div>
+    <p class="small">This repo’s postinstall hook runs <span class="mono">uv sync --locked</span> and installs the child folder’s Python.</p>
+  </section>
+
+  <section class="frame" id="f-runtime" data-step style="left:9700px; top:4900px; --s:0.75">
+    <p class="eyebrow">Laptop, CI and production</p>
+    <h2>Same mise.toml on your laptop and in CI</h2>
+    <div class="row">
+      <div class="term" style="width:700px; flex:none">
+        <p class="c"># GitHub Actions: workflow excerpt</p>
+        <p>steps:</p>
+        <p>  - uses: actions/checkout@v6</p>
+        <p>  - uses: <span class="o">jdx/mise-action@v5</span></p>
+        <p>  - run: mise run test</p>
+        <p>  - run: mise run lint</p>
+      </div>
+      <div class="col">
+        <div class="point"><h3>Pinned tools in CI</h3><p>Pin tool versions. mise-action installs the configured tools.</p></div>
+        <div class="point"><h3>Terraform is a tool too</h3><p>Pin the CLI; lock provider dependencies separately.</p></div>
+        <div class="point"><h3>For production containers</h3><p>Choose compatible Python. Install app dependencies with <span class="mono">uv sync --locked --no-dev</span>.</p></div>
+      </div>
+    </div>
+    <p class="small">Example excerpt. The demo repo pins actions by commit SHA.</p>
+    <!-- Sources: https://github.com/jdx/mise-action ; https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepsuses ; https://docs.astral.sh/uv/guides/integration/docker/ ; https://developer.hashicorp.com/terraform/language/block/terraform#required_version -->
+  </section>
+
+  <section class="frame" id="f-windows" data-step style="left:7900px; top:2820px; --s:1">
+    <p class="eyebrow">On Windows</p>
+    <h2>Works on Windows too</h2>
+    <div class="term">
+      <p class="c"># in PowerShell, no admin rights needed</p>
+      <p>irm https://mise.run/powershell | iex</p>
+      <p class="c"># or</p>
+      <p>winget install jdx.mise</p>
+    </div>
+    <div class="cards two">
+      <div class="card"><h3>Shared mise.toml</h3><p>Share the config across platforms. Task commands may need platform-specific changes.</p></div>
+      <div class="card"><h3>Use PowerShell 7</h3><p>Add one line to your profile and the venv switches on with cd</p></div>
+    </div>
+  </section>
+
+  <section class="frame" id="f-demo" data-step style="left:7900px; top:1670px; --s:1">
+    <p class="eyebrow">Live demo</p>
+    <h2>Clone the project and run the tests</h2>
+    <video controls playsinline preload="metadata" poster="assets/demo-preview.png" aria-label="Recorded mise and uv terminal demo" style="width:100%; min-height:0; flex:1; object-fit:contain; background:#191b1d; border-radius:16px">
+      <source src="assets/mise-uv-demo.mp4" type="video/mp4">
+      <a href="assets/mise-uv-demo.mp4">Watch the recorded terminal demo</a>
+    </video>
+    <p class="small">Recorded terminal demo · 1:30 · <a href="assets/mise-uv-demo.mp4" download>Download video</a></p>
+  </section>
+
+  <section class="frame" id="f-gotchas" data-step style="left:9700px; top:4100px; --s:0.75">
+    <p class="eyebrow">Gotchas</p>
+    <h2>Common problems and fixes</h2>
+    <div class="cards">
+      <div class="card"><p class="tag">mise doctor</p><h3>Shims are not activation</h3><p>With shims alone the venv is not on PATH. Use mise activate.</p></div>
+      <div class="card"><p class="tag">UV_PYTHON</p><h3>Two tools want Python</h3><p>uv may pick a Python it downloaded. Point UV_PYTHON at mise’s.</p></div>
+      <div class="card"><p class="tag">mise sync python</p><h3>Old Pythons linger</h3><p>Reuse pyenv or uv installs, then delete what you don’t need</p></div>
+    </div>
+    <p class="small mono">UV_PYTHON = { value = "{{ tools.python.path }}", tools = true }</p>
+  </section>
+
+  <section class="frame bare" id="f-onething" data-step style="left:9700px; top:520px; --s:1">
+    <p class="eyebrow">If you remember one thing</p>
+    <div class="spacer"></div>
+    <h1 class="statement">Tell AI the goal</h1>
+    <p>With today’s premium AI models, explain the outcome and constraints. Let the model propose the steps.</p>
+    <p class="lead">“Make this project easy for a new teammate to run.”</p>
+    <p class="small">Ask why if it skips uv for Python or mise for a bigger monorepo.</p>
+    <div class="spacer"></div>
+  </section>
+
+  <p class="region-label" style="left:9700px; top:3960px; font-size:56px">Backup · for questions</p>
+
+  <section class="frame" id="f-compare" data-step style="left:7900px; top:5120px; --s:1">
+    <p class="eyebrow">Alternatives</p>
+    <h2>Other ways to get an easy setup</h2>
+    <table class="tbl alt">
+      <tr><th style="width:27%">Approach</th><th style="width:33%">Good when</th><th style="width:40%">Trade-off</th></tr>
+      <tr><td>uv alone <span class="yr">2024</span></td><td>The project is pure Python</td><td>Python only</td></tr>
+      <tr><td>Dev Containers <span class="yr">2019</span></td><td>You want everything in a container</td><td>Needs a container runtime</td></tr>
+      <tr><td>Nix <span class="yr">2003</span>, devbox <span class="yr">2022</span></td><td>You want declarative, reproducible environments</td><td>Steep learning curve</td></tr>
+      <tr><td>Jupyter <span class="yr">2014</span></td><td>Exploring data step by step</td><td>Not a setup: run it inside one, <span class="cmd">uv run --with jupyter jupyter lab</span></td></tr>
+      <tr><td>Anaconda <span class="yr">2012</span>, pixi <span class="yr">2023</span></td><td>Data science with native libraries</td><td>Separate ecosystem; mise can install Anaconda too</td></tr>
+      <tr class="divider"><td colspan="3">Older ways, still around</td></tr>
+      <tr class="old"><td>pyenv <span class="yr">2012</span></td><td>Switching Python versions</td><td>Compiles Python; mise and uv do this now</td></tr>
+      <tr class="old"><td>asdf <span class="yr">2014</span></td><td>Versions for many languages</td><td>mise started as a faster asdf</td></tr>
+    </table>
+  </section>
+
+  <section class="frame" id="f-whennot" data-step style="left:7900px; top:3970px; --s:1">
+    <p class="eyebrow">Honest advice</p>
+    <h2>When uv alone is enough</h2>
+    <div class="cards two">
+      <div class="card"><p class="tag">skip mise</p><h3>uv is enough when</h3><p>The repo is pure Python, has no env vars to manage, and the team is happy</p></div>
+      <div class="card"><p class="tag">add mise</p><h3>mise earns its place when</h3><p>The project also needs Node or other tools, settings, shared commands, or quick onboarding</p></div>
+    </div>
+    <p class="lead">Start with uv. Add mise when the README grows.</p>
+  </section>
+
+  <section class="frame os" id="f-os" data-step style="left:9700px; top:2820px; --s:1">
+    <img class="os-logo" src="assets/level-up-logo.png" alt="Level Up Koodarit">
+    <div class="os-row">
+      <div class="os-text">
+        <p class="os-line"><a href="https://oslevelupkoodarit.github.io/" target="_blank" rel="noopener">OS Level Up</a>: the rogue and independent sibling of <a href="https://mimmitkoodaa.fi/in-english/" target="_blank" rel="noopener">Mimmit Koodaa</a></p>
+        <p class="os-pun">OS as in OmpeluSeura, the sewing circle. Or the operating system</p>
+        <p class="os-sub">Peer support for learning to code, in Finnish and English. Materials, meetups and visits to IT companies.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="frame bare" id="f-thanks" data-step style="left:9700px; top:1670px; --s:1">
+    <p class="eyebrow">Thank you</p>
+    <div class="row" style="flex:1; align-items:center">
+      <div class="col" style="gap:40px">
+        <h1 class="touch">Let’s stay in touch</h1>
+        <div class="links" style="grid-template-columns:1fr 1fr">
+          <div style="grid-column:1 / -1"><p class="tag">Me</p><p><a href="https://www.linkedin.com/in/lenniojala/" target="_blank" rel="noopener">Lenni Ojala · linkedin.com/in/lenniojala</a></p></div>
+          <div style="grid-column:1 / -1"><p class="tag">Slack</p><p>I hang out in <a href="https://koodiklinikka.fi/" target="_blank" rel="noopener">Koodiklinikka</a> and <a href="https://oslevelupkoodarit.github.io/" target="_blank" rel="noopener">OS Level Up</a></p></div>
+          <div style="grid-column:1 / -1"><p class="tag">Demo repo</p><p><a href="https://github.com/laojala/mise-uv-demo" target="_blank" rel="noopener">github.com/laojala/mise-uv-demo</a></p></div>
+          <div><p class="tag">mise</p><p><a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise.jdx.dev</a></p></div>
+          <div><p class="tag">uv</p><p><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">docs.astral.sh/uv</a></p></div>
+        </div>
+        <p class="disclaimer">I’m not affiliated with mise, uv or Astral, just a happy user. Views are my own.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<div id="pv" aria-live="polite">
+  <div class="timer" id="pv-timer">00:00</div>
+  <div class="now" id="pv-now"></div>
+  <div class="next" id="pv-next"></div>
+  <div class="pnotes" id="pv-notes"></div>
+  <div class="small">Keep the audience window open in another tab or window of this page. Both follow each other when the browser allows it; test this before the talk.</div>
+</div>
+
+<div id="notes" hidden><h2>Speaker notes</h2><p id="notes-text"></p></div>
+<div id="hint"><kbd>→</kbd> next · <kbd>←</kbd> back · <kbd>O</kbd> overview · <kbd>N</kbd> notes · <kbd>F</kbd> fullscreen · <kbd>12</kbd><kbd>↵</kbd> jump</div>
+<div id="progress"></div>
+<div id="picker" hidden aria-label="Jump to a stop"></div>
+<div id="chrome">
+  <span class="title" id="chrome-title"></span>
+  <button type="button" id="btn-prev" aria-label="Previous step">‹ Back</button>
+  <button type="button" id="btn-next" aria-label="Next step">Next ›</button>
+  <button type="button" id="btn-over" aria-label="Toggle overview">Overview</button>
+  <button type="button" id="btn-notes" aria-label="Toggle speaker notes">Notes</button>
+  <button type="button" id="btn-full" aria-label="Toggle fullscreen">Fullscreen</button>
+  <button type="button" id="count" aria-haspopup="true" aria-expanded="false" aria-controls="picker" title="Jump to a stop (or type its number and press Enter)"></button>
+</div>
+
+
+
+<script>
+(function () {
+  const STEPS = [
+    { id: 'f-cover', title: 'Smooth project setup with mise and uv', notes: "Pinned tools. Locked dependencies. Live demo." },
+    { id: 'f-xkcd', title: 'Is this your laptop?', notes: "Hands up: how many Pythons?" },
+    { id: 'f-hover', title: 'The hover text', notes: "Read hover text. Pause." },
+    { id: 'f-tax', title: 'The old way', notes: "Manual steps add up. Repeat for every teammate." },
+    { id: 'f-cooks', title: 'Too many cooks', notes: "Overcooked → mise-en-place: everything in its place." },
+    { id: 'f-history', title: 'What changed while I was away', notes: "Astral’s uv: faster package installs. mise: tools, settings, tasks." },
+    { id: 'f-laptop', title: 'My new laptop', notes: "New laptop. Installed mise; repos supplied the tools." },
+    { id: 'f-stars', title: 'GitHub stars', notes: "Stars show interest, not usage." },
+    { id: 'file-area', title: 'How it works', notes: "Pin tools in mise.toml. Commit uv.lock." },
+    { id: 's-tools', title: 'Which versions', notes: "Pinned Python, uv, Ruff, Node and Terraform." },
+    { id: 'f-packages', title: 'Two kinds of packages', notes: "Libraries: project venv. CLI tools: isolated environments." },
+    { id: 's-env', title: 'Environment variables', notes: "Project settings here. Keep secrets uncommitted." },
+    { id: 'f-activation', title: 'What happens on cd', notes: "Enter: Python + settings. Leave: previous environment." },
+    { id: 's-tasks', title: 'Your commands', notes: "Shared commands: test, lint, app." },
+    { id: 'f-ci', title: 'mise can replace the Makefile', notes: "Like make, with tool installation included." },
+    { id: 'f-yaml', title: 'A confession', notes: "Life’s easier when indentation doesn’t matter." },
+    { id: 'f-stepzero', title: 'One-time setup', notes: "Install. Activate. New terminal. Trust. Install tools." },
+    { id: 'f-demo', title: 'Live demo', notes: "Terminal → setup → hello → Python switch → tests → app. Recording if needed." },
+    { id: 'f-windows', title: 'Works on Windows too', notes: "PowerShell 7. Activate. Tasks may need platform adjustments." },
+    { id: 'f-whennot', title: 'When uv alone is enough', notes: "Pure Python? Start with uv. Add mise when useful." },
+    { id: 'f-compare', title: 'Other ways to get an easy setup', notes: "Choose for your project. No universal winner." },
+    { id: 'f-os', title: 'OS Level Up', notes: "Peer support. Finnish + English." },
+    { id: 'f-onething', title: 'If you remember one thing', notes: "Goal + constraints. Let AI propose the steps." },
+    { id: 'f-thanks', title: 'Let’s stay in touch', notes: "Links here. Backup slides for questions." }
+  ];
+
+  const stage = document.getElementById('stage');
+  const world = document.getElementById('world');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const presenter = location.hash === '#presenter';
+  if (presenter) document.body.classList.add('presenter');
+
+  let idx = 0, cam = null, raf = 0, overview = false, detour = null;
+
+  function worldRect(id) {
+    if (id === '__all') return { x: 0, y: 0, w: world.offsetWidth, h: world.offsetHeight };
+    const el = document.getElementById(id);
+    const r = el.getBoundingClientRect(), wr = world.getBoundingClientRect();
+    const k = cam ? stage.clientWidth / cam.w : 1;
+    return { x: (r.left - wr.left) / k, y: (r.top - wr.top) / k, w: r.width / k, h: r.height / k };
+  }
+  function fit(r, pad) {
+    const vw = stage.clientWidth, vh = stage.clientHeight;
+    const w = Math.max(r.w, r.h * vw / vh) * (pad || 1.08);
+    return { x: r.x + r.w / 2, y: r.y + r.h / 2, w };
+  }
+  function apply(c) {
+    const vw = stage.clientWidth, vh = stage.clientHeight, k = vw / c.w;
+    world.style.transform = 'translate(' + (vw / 2 - c.x * k) + 'px,' + (vh / 2 - c.y * k) + 'px) scale(' + k + ')';
+  }
+  // Smooth zoom path (van Wijk and Nuij), the same maths as d3.interpolateZoom
+  function zoomPath(p0, p1) {
+    const rho = Math.SQRT2, rho2 = 2, rho4 = 4;
+    const [ux0, uy0, w0] = p0, [ux1, uy1, w1] = p1;
+    const dx = ux1 - ux0, dy = uy1 - uy0, d2 = dx * dx + dy * dy;
+    let f, S;
+    if (d2 < 1e-12) {
+      S = Math.log(w1 / w0) / rho;
+      f = t => [ux0 + t * dx, uy0 + t * dy, w0 * Math.exp(rho * t * S)];
+    } else {
+      const d1 = Math.sqrt(d2);
+      const b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1);
+      const b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1);
+      const r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0);
+      const r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+      S = (r1 - r0) / rho;
+      f = t => {
+        const s = t * S, c0 = Math.cosh(r0);
+        const u = w0 / (rho2 * d1) * (c0 * Math.tanh(rho * s + r0) - Math.sinh(r0));
+        return [ux0 + u * dx, uy0 + u * dy, w0 * c0 / Math.cosh(rho * s + r0)];
+      };
+    }
+    f.duration = Math.abs(S) * 1000;
+    return f;
+  }
+  function fly(target, instant) {
+    cancelAnimationFrame(raf);
+    if (instant || reduce || !cam) { cam = target; apply(cam); return; }
+    const path = zoomPath([cam.x, cam.y, cam.w], [target.x, target.y, target.w]);
+    const dur = Math.min(1700, Math.max(750, path.duration * 0.85));
+    const t0 = performance.now();
+    const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    function tick(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      const p = path(ease(t));
+      cam = { x: p[0], y: p[1], w: p[2] };
+      apply(cam);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  const chTitle = document.getElementById('chrome-title');
+  const count = document.getElementById('count');
+  const progress = document.getElementById('progress');
+  const notesBox = document.getElementById('notes');
+  const notesText = document.getElementById('notes-text');
+
+  const BACKUP = [
+    { id: 'f-split', title: 'mise owns the environment, uv the packages' },
+    { id: 'f-setups', title: 'Do I need uv? Three setups' },
+    { id: 'f-gotchas', title: 'Common problems and fixes' },
+    { id: 'f-runtime', title: 'Laptop, CI and production' }
+  ];
+  function sideTrip(id) { detour = id; overview = false; fly(fit(worldRect(id), 1.08)); render(); }
+  const picker = document.getElementById('picker');
+  function buildPicker() {
+    picker.innerHTML = '';
+    STEPS.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="n">' + (i + 1) + '</span><span></span>';
+      b.lastChild.textContent = s.title;
+      b.addEventListener('click', () => { closePicker(); go(i); });
+      picker.appendChild(b);
+    });
+    const h = document.createElement('p');
+    h.className = 'pick-head'; h.textContent = 'Backup for questions';
+    picker.appendChild(h);
+    BACKUP.forEach(s => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="n">·</span><span></span>';
+      b.lastChild.textContent = s.title;
+      b.addEventListener('click', () => { closePicker(); sideTrip(s.id); });
+      picker.appendChild(b);
+    });
+  }
+  function openPicker() {
+    buildPicker();
+    picker.hidden = false; count.setAttribute('aria-expanded', 'true');
+    const cur = picker.children[idx];
+    if (cur) { cur.setAttribute('aria-current', 'true'); cur.scrollIntoView({ block: 'center' }); cur.focus(); }
+  }
+  function closePicker() { picker.hidden = true; count.setAttribute('aria-expanded', 'false'); }
+  count.addEventListener('click', e => { e.stopPropagation(); picker.hidden ? openPicker() : closePicker(); });
+  document.addEventListener('click', e => { if (!picker.hidden && !e.target.closest('#picker, #count')) closePicker(); });
+  let jumpBuf = '', jumpT = 0;
+
+  function render() {
+    const s = STEPS[idx];
+    chTitle.textContent = overview ? 'Overview' : detour ? 'Side trip · press → to return' : s.title;
+    count.textContent = (idx + 1) + ' / ' + STEPS.length;
+    progress.style.width = ((idx + 1) / STEPS.length * 100) + '%';
+    notesText.textContent = s.notes;
+    document.getElementById('pv-now').textContent = 'Now: ' + s.title;
+    const nx = STEPS[idx + 1];
+    document.getElementById('pv-next').textContent = nx ? 'Next: ' + nx.title : 'Last step';
+    document.getElementById('pv-notes').textContent = s.notes;
+  }
+
+  function go(i, opts) {
+    opts = opts || {};
+    idx = Math.max(0, Math.min(STEPS.length - 1, i));
+    overview = false; detour = null;
+    const id = STEPS[idx].id;
+    if (id !== 'f-demo') document.querySelectorAll('video').forEach(video => video.pause());
+    fly(fit(worldRect(id), id === '__all' ? 1.02 : 1.08), opts.instant);
+    render();
+    if (!opts.remote) broadcast();
+  }
+  function toggleOverview() {
+    if (overview) { go(idx); return; }
+    overview = true; detour = null;
+    fly(fit(worldRect('__all'), 1.02));
+    render();
+  }
+
+  // Sync between the audience window and #presenter, when the browser allows it
+  let chan = null;
+  try { chan = new BroadcastChannel('mise-zoom-deck'); chan.onmessage = e => { if (e.data && typeof e.data.step === 'number' && e.data.step !== idx) go(e.data.step, { remote: true }); }; } catch (e) { chan = null; }
+  function broadcast() {
+    try { if (chan) chan.postMessage({ step: idx }); } catch (e) {}
+    try { localStorage.setItem('mise-zoom-step', String(idx) + ':' + Date.now()); } catch (e) {}
+  }
+  window.addEventListener('storage', e => {
+    if (e.key !== 'mise-zoom-step' || !e.newValue) return;
+    const n = parseInt(e.newValue, 10);
+    if (!isNaN(n) && n !== idx) go(n, { remote: true });
+  });
+
+  // Input
+  document.addEventListener('keydown', e => {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || (e.target.closest && e.target.closest('video')))) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (!picker.hidden && k === 'Escape') { closePicker(); count.focus(); return; }
+    if (!picker.hidden && (k === 'ArrowDown' || k === 'ArrowUp')) {
+      e.preventDefault();
+      const items = [...picker.children], at = items.indexOf(document.activeElement);
+      const next = items[Math.max(0, Math.min(items.length - 1, (at < 0 ? idx : at) + (k === 'ArrowDown' ? 1 : -1)))];
+      if (next) next.focus();
+      return;
+    }
+    if (!picker.hidden && k === 'Enter' && e.target.closest && e.target.closest('#picker')) return;
+    if (/^[0-9]$/.test(k)) {
+      jumpBuf = (jumpBuf + k).slice(-2);
+      count.textContent = 'Go to ' + jumpBuf + '…';
+      clearTimeout(jumpT); jumpT = setTimeout(() => { jumpBuf = ''; render(); }, 2000);
+      return;
+    }
+    if (k === 'Enter' && jumpBuf) {
+      e.preventDefault();
+      const n = parseInt(jumpBuf, 10); jumpBuf = ''; clearTimeout(jumpT);
+      if (n >= 1 && n <= STEPS.length) go(n - 1); else render();
+      return;
+    }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { if (k === 'Enter' && e.target.tagName === 'BUTTON') return; e.preventDefault(); go(detour ? idx : idx + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); go(detour ? idx : idx - 1); }
+    else if (k === 'Escape' && detour) go(idx);
+    else if (k === 'Home') go(0);
+    else if (k === 'End') go(STEPS.length - 1);
+    else if (k === 'o' || k === 'O') toggleOverview();
+    else if (k === 'Escape' && overview) toggleOverview();
+    else if (k === 'n' || k === 'N') notesBox.hidden = !notesBox.hidden;
+    else if (k === 'f' || k === 'F') toggleFull();
+    wake();
+  });
+  const stepIndexById = {};
+  STEPS.forEach((s, i) => { stepIndexById[s.id] = i; });
+  stage.addEventListener('click', e => {
+    if (e.target.closest('a, button, input, label, video')) return;
+    const el = e.target.closest('[data-step]');
+    if (!el) return;
+    if (stepIndexById[el.id] !== undefined) { go(stepIndexById[el.id]); return; }
+    sideTrip(el.id);
+  });
+  let tx = null, ty = null;
+  stage.addEventListener('touchstart', e => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; }, { passive: true });
+  stage.addEventListener('touchend', e => {
+    if (tx === null) return;
+    const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(idx + (dx < 0 ? 1 : -1));
+    tx = ty = null;
+  });
+  document.getElementById('btn-prev').addEventListener('click', () => go(detour ? idx : idx - 1));
+  document.getElementById('btn-next').addEventListener('click', () => go(detour ? idx : idx + 1));
+  document.getElementById('btn-over').addEventListener('click', toggleOverview);
+  document.getElementById('btn-notes').addEventListener('click', () => { notesBox.hidden = !notesBox.hidden; });
+  document.getElementById('btn-full').addEventListener('click', toggleFull);
+  function toggleFull() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen().catch(() => {});
+    } catch (e) {}
+  }
+
+  // Hide the controls while presenting
+  const chrome = document.getElementById('chrome'), hint = document.getElementById('hint');
+  let idleT = 0;
+  function wake() { if (!picker.hidden) { chrome.classList.remove('idle'); clearTimeout(idleT); return; } chrome.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => chrome.classList.add('idle'), 2500); }
+  document.addEventListener('mousemove', wake);
+  setTimeout(() => { hint.style.opacity = '0'; }, 6000);
+  setTimeout(() => { hint.hidden = true; }, 7000);
+
+  // Presenter timer
+  if (presenter) {
+    const t0 = Date.now(), el = document.getElementById('pv-timer');
+    setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); el.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }, 1000);
+  }
+
+
+
+  window.addEventListener('resize', () => {
+    const id = overview ? '__all' : (detour || STEPS[idx].id);
+    cam = fit(worldRect(id), id === '__all' ? 1.02 : 1.08);
+    apply(cam);
+  });
+
+  go(0, { instant: true });
+  wake();
+})();
+</script>
+
+</body>
+</html>

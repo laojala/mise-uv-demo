@@ -4,6 +4,14 @@ A tiny word counter for a 20–30 minute meetup demo. Python tools, a virtual
 environment, environment variables and commands live in `mise.toml`;
 uv manages the package and locked dependencies.
 
+## Presentation
+
+[View the presentation](https://laojala.github.io/mise-uv-demo/).
+
+Watch the 90-second demo:
+
+[![Watch the mise and uv demo](docs/assets/demo-preview.png)](https://laojala.github.io/mise-uv-demo/assets/mise-uv-demo.mp4)
+
 ## Step zero
 
 Install [mise](https://mise.jdx.dev/getting-started.html) once. On macOS:

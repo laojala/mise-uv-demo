@@ -1,0 +1,63 @@
+1
+00:00:01,313 --> 00:00:09,825
+Let’s start from a fresh clone. mise is already installed and activated.
+
+2
+00:00:09,825 --> 00:00:13,286
+I’ve reviewed this project’s config. Now I tell mise I trust it.
+
+3
+00:00:13,286 --> 00:00:19,954
+I already have these tool versions. mise reuses the installations across projects.
+
+4
+00:00:19,954 --> 00:00:29,105
+Here’s mise.toml. The tool versions and settings are right here.
+
+5
+00:00:29,105 --> 00:00:38,411
+A little further down: the setup hook, and commands to test and run the app.
+
+6
+00:00:38,411 --> 00:00:42,412
+Tools, settings, setup and shared commands. Python dependencies live in pyproject.toml and uv.lock.
+
+7
+00:00:42,412 --> 00:00:47,660
+The setup hook syncs this project’s .venv. The greeting comes from mise.toml too.
+
+8
+00:00:47,660 --> 00:00:51,164
+Here in the root: Python 3.14.
+
+9
+00:00:51,164 --> 00:00:53,643
+Now for the other Python.
+
+10
+00:00:53,643 --> 00:01:02,118
+This folder inherits the other tools. Its own mise.toml overrides Python.
+
+11
+00:01:02,118 --> 00:01:05,619
+Python 3.13 in this folder.
+
+12
+00:01:05,619 --> 00:01:07,649
+Back to the root…
+
+13
+00:01:07,649 --> 00:01:11,579
+…and back to Python 3.14.
+
+14
+00:01:11,579 --> 00:01:19,124
+Setup done. Let’s see if it actually works.
+
+15
+00:01:19,124 --> 00:01:25,349
+Tests pass. Let’s run the app.
+
+16
+00:01:25,349 --> 00:01:30,353
+There we go. The app is running. Open the URL and we’re ready to code.
