@@ -8,8 +8,8 @@
 #f-runtime .point h3 { font-size: 32px; }
 #f-runtime .point p { font-size: 27px; line-height: 1.35; }
 #f-runtime .term p { font-size: 25px; }
-.yaml-joke { flex: 1; justify-content: center; }
-.yaml-joke p { font-size: 34px !important; }
+.yaml-joke { display: flex; flex: 1; min-height: 0; justify-content: center; }
+.yaml-joke img { width: 100%; height: 100%; object-fit: contain; border-radius: 16px; }
 </style>
 <title>mise and uv Zoom Deck — fact-checked</title>
 <style>
@@ -354,13 +354,11 @@ body.presenter #pv {
         <h2>I used to be a YAML developer</h2>
         <p class="lead">mise.toml is TOML. No indentation rules to keep track of.</p>
       </div>
-      <div class="term yaml-joke" aria-label="A YAML snippet whose indentation has gone wrong">
-        <p><span class="c"># mise.yaml (imaginary)</span></p>
-        <p>tools:</p>
-        <p>  python: "3.14"</p>
-        <p>    uv: latest</p>
-        <p>   node: lts     <span class="c"># inside python now?</span></p>
-        <p>  terraform: latest</p>
+      <div class="col" style="min-height:0; gap:12px">
+        <a class="yaml-joke" href="https://www.reddit.com/r/ProgrammerHumor/comments/9fhvyl/writing_yaml/" target="_blank" rel="noopener">
+          <img src="assets/writing-yaml.webp" alt="A ruler and spirit level held against a laptop screen to align YAML indentation">
+        </a>
+        <p class="credit"><a href="https://www.reddit.com/r/ProgrammerHumor/comments/9fhvyl/writing_yaml/" target="_blank" rel="noopener">Writing YAML · r/ProgrammerHumor</a></p>
       </div>
     </div>
   </section>
@@ -612,12 +610,12 @@ body.presenter #pv {
     <div class="spacer"></div>
     <h1 class="statement">Tell AI the goal</h1>
     <p>With today’s premium AI models, explain the outcome and constraints. Let the model propose the steps.</p>
-    <p class="lead">“Make this project easy for a new teammate to run.”</p>
-    <p class="small">Ask why if it skips uv for Python or mise for a bigger monorepo.</p>
+    <p class="lead">“Make this project easy for a new teammate to run”</p>
+    <p class="small">Ask why if it skips uv for Python or mise for a bigger monorepo</p>
     <div class="spacer"></div>
   </section>
 
-  <p class="region-label" style="left:9700px; top:3960px; font-size:56px">Backup · for questions</p>
+  <p class="region-label" style="left:9700px; top:3960px; font-size:56px">For questions</p>
 
   <section class="frame" id="f-compare" data-step style="left:7900px; top:5120px; --s:1">
     <p class="eyebrow">Alternatives</p>
@@ -704,36 +702,38 @@ body.presenter #pv {
 <script>
 (function () {
   const STEPS = [
-    { id: 'f-cover', title: 'Smooth project setup with mise and uv', notes: "Pinned tools. Locked dependencies. Live demo." },
-    { id: 'f-xkcd', title: 'Is this your laptop?', notes: "Hands up: how many Pythons?" },
-    { id: 'f-hover', title: 'The hover text', notes: "Read hover text. Pause." },
-    { id: 'f-tax', title: 'The old way', notes: "Manual steps add up. Repeat for every teammate." },
-    { id: 'f-cooks', title: 'Too many cooks', notes: "Overcooked → mise-en-place: everything in its place." },
-    { id: 'f-history', title: 'What changed while I was away', notes: "Astral’s uv: faster package installs. mise: tools, settings, tasks." },
-    { id: 'f-laptop', title: 'My new laptop', notes: "New laptop. Installed mise; repos supplied the tools." },
-    { id: 'f-stars', title: 'GitHub stars', notes: "Stars show interest, not usage." },
-    { id: 'file-area', title: 'How it works', notes: "Pin tools in mise.toml. Commit uv.lock." },
-    { id: 's-tools', title: 'Which versions', notes: "Pinned Python, uv, Ruff, Node and Terraform." },
-    { id: 'f-packages', title: 'Two kinds of packages', notes: "Libraries: project venv. CLI tools: isolated environments." },
-    { id: 's-env', title: 'Environment variables', notes: "Project settings here. Keep secrets uncommitted." },
-    { id: 'f-activation', title: 'What happens on cd', notes: "Enter: Python + settings. Leave: previous environment." },
-    { id: 's-tasks', title: 'Your commands', notes: "Shared commands: test, lint, app." },
-    { id: 'f-ci', title: 'mise can replace the Makefile', notes: "Like make, with tool installation included." },
-    { id: 'f-yaml', title: 'A confession', notes: "Life’s easier when indentation doesn’t matter." },
-    { id: 'f-stepzero', title: 'One-time setup', notes: "Install. Activate. New terminal. Trust. Install tools." },
-    { id: 'f-demo', title: 'Live demo', notes: "Terminal → setup → hello → Python switch → tests → app. Recording if needed." },
-    { id: 'f-windows', title: 'Works on Windows too', notes: "PowerShell 7. Activate. Tasks may need platform adjustments." },
-    { id: 'f-whennot', title: 'When uv alone is enough', notes: "Pure Python? Start with uv. Add mise when useful." },
-    { id: 'f-compare', title: 'Other ways to get an easy setup', notes: "Choose for your project. No universal winner." },
-    { id: 'f-os', title: 'OS Level Up', notes: "Peer support. Finnish + English." },
-    { id: 'f-onething', title: 'If you remember one thing', notes: "Goal + constraints. Let AI propose the steps." },
-    { id: 'f-thanks', title: 'Let’s stay in touch', notes: "Links here. Backup slides for questions." }
+    { id: 'f-cover', title: 'Smooth project setup with mise and uv', notes: "" },
+    { id: 'f-xkcd', title: 'Is this your laptop?', notes: "" },
+    { id: 'f-hover', title: 'The hover text', notes: "" },
+    { id: 'f-tax', title: 'The old way', notes: "" },
+    { id: 'f-cooks', title: 'Too many cooks', notes: "" },
+    { id: 'f-history', title: 'What changed while I was away', notes: "" },
+    { id: 'f-laptop', title: 'My new laptop', notes: "" },
+    { id: 'f-stars', title: 'GitHub stars', notes: "" },
+    { id: 'file-area', title: 'How it works', notes: "" },
+    { id: 's-tools', title: 'Which versions', notes: "" },
+    { id: 'f-packages', title: 'Two kinds of packages', notes: "" },
+    { id: 's-env', title: 'Environment variables', notes: "" },
+    { id: 'f-activation', title: 'What happens on cd', notes: "" },
+    { id: 's-tasks', title: 'Your commands', notes: "" },
+    { id: 'f-ci', title: 'mise can replace the Makefile', notes: "" },
+    { id: 'f-yaml', title: 'A confession', notes: "" },
+    { id: 'f-stepzero', title: 'One-time setup', notes: "" },
+    { id: 'f-demo', title: 'Live demo', notes: "" },
+    { id: 'f-windows', title: 'Works on Windows too', notes: "" },
+    { id: 'f-whennot', title: 'When uv alone is enough', notes: "" },
+    { id: 'f-compare', title: 'Other ways to get an easy setup', notes: "" },
+    { id: 'f-onething', title: 'If you remember one thing', notes: "" },
+    { id: 'f-thanks', title: 'Let’s stay in touch', notes: "" },
+    { id: 'f-os', title: 'OS Level Up', notes: "" },
+    { id: 'f-gotchas', title: 'Common problems and fixes', notes: "" },
+    { id: 'f-runtime', title: 'Laptop, CI and production', notes: "" }
   ];
 
   const stage = document.getElementById('stage');
   const world = document.getElementById('world');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const presenter = location.hash === '#presenter';
+  const presenter = new URLSearchParams(location.hash.slice(1)).has('presenter');
   if (presenter) document.body.classList.add('presenter');
 
   let idx = 0, cam = null, raf = 0, overview = false, detour = null;
@@ -742,7 +742,7 @@ body.presenter #pv {
     if (id === '__all') return { x: 0, y: 0, w: world.offsetWidth, h: world.offsetHeight };
     const el = document.getElementById(id);
     const r = el.getBoundingClientRect(), wr = world.getBoundingClientRect();
-    const k = cam ? stage.clientWidth / cam.w : 1;
+    const k = wr.width / world.offsetWidth;
     return { x: (r.left - wr.left) / k, y: (r.top - wr.top) / k, w: r.width / k, h: r.height / k };
   }
   function fit(r, pad) {
@@ -802,13 +802,16 @@ body.presenter #pv {
   const notesBox = document.getElementById('notes');
   const notesText = document.getElementById('notes-text');
 
-  const BACKUP = [
-    { id: 'f-split', title: 'mise owns the environment, uv the packages' },
+  const QUESTIONS = [
     { id: 'f-setups', title: 'Do I need uv? Three setups' },
-    { id: 'f-gotchas', title: 'Common problems and fixes' },
-    { id: 'f-runtime', title: 'Laptop, CI and production' }
+    { id: 'f-split', title: 'mise owns the environment, uv the packages' }
   ];
-  function sideTrip(id) { detour = id; overview = false; fly(fit(worldRect(id), 1.08)); render(); }
+  function sideTrip(id, opts) {
+    detour = id; overview = false;
+    fly(fit(worldRect(id), 1.08), opts && opts.instant);
+    render();
+    if (!opts || !opts.remote) broadcast();
+  }
   const picker = document.getElementById('picker');
   function buildPicker() {
     picker.innerHTML = '';
@@ -821,9 +824,9 @@ body.presenter #pv {
       picker.appendChild(b);
     });
     const h = document.createElement('p');
-    h.className = 'pick-head'; h.textContent = 'Backup for questions';
+    h.className = 'pick-head'; h.textContent = 'For questions';
     picker.appendChild(h);
-    BACKUP.forEach(s => {
+    QUESTIONS.forEach(s => {
       const b = document.createElement('button');
       b.type = 'button';
       b.innerHTML = '<span class="n">·</span><span></span>';
@@ -843,16 +846,23 @@ body.presenter #pv {
   document.addEventListener('click', e => { if (!picker.hidden && !e.target.closest('#picker, #count')) closePicker(); });
   let jumpBuf = '', jumpT = 0;
 
+  function currentView() {
+    return overview ? 'overview' : 'slide=' + encodeURIComponent(detour || STEPS[idx].id);
+  }
   function render() {
     const s = STEPS[idx];
-    chTitle.textContent = overview ? 'Overview' : detour ? 'Side trip · press → to return' : s.title;
+    if (overview || detour || s.id !== 'f-demo') document.querySelectorAll('video').forEach(video => video.pause());
+    const title = overview ? 'Overview' : detour ? (QUESTIONS.find(q => q.id === detour)?.title || 'Details') : s.title;
+    chTitle.textContent = title;
     count.textContent = (idx + 1) + ' / ' + STEPS.length;
     progress.style.width = ((idx + 1) / STEPS.length * 100) + '%';
     notesText.textContent = s.notes;
-    document.getElementById('pv-now').textContent = 'Now: ' + s.title;
-    const nx = STEPS[idx + 1];
+    document.getElementById('pv-now').textContent = 'Now: ' + title;
+    const nx = detour ? s : STEPS[idx + 1];
     document.getElementById('pv-next').textContent = nx ? 'Next: ' + nx.title : 'Last step';
     document.getElementById('pv-notes').textContent = s.notes;
+    const hash = '#' + (presenter ? 'presenter&' : '') + currentView();
+    if (location.hash !== hash) history.replaceState(null, '', hash);
   }
 
   function go(i, opts) {
@@ -860,29 +870,36 @@ body.presenter #pv {
     idx = Math.max(0, Math.min(STEPS.length - 1, i));
     overview = false; detour = null;
     const id = STEPS[idx].id;
-    if (id !== 'f-demo') document.querySelectorAll('video').forEach(video => video.pause());
     fly(fit(worldRect(id), id === '__all' ? 1.02 : 1.08), opts.instant);
     render();
     if (!opts.remote) broadcast();
   }
-  function toggleOverview() {
-    if (overview) { go(idx); return; }
+  function toggleOverview(opts) {
+    if (overview) { go(idx, opts); return; }
     overview = true; detour = null;
-    fly(fit(worldRect('__all'), 1.02));
+    fly(fit(worldRect('__all'), 1.02), opts && opts.instant);
     render();
+    if (!opts || !opts.remote) broadcast();
   }
 
-  // Sync between the audience window and #presenter, when the browser allows it
+  // Keep presenter and audience windows on the same view of this deck.
+  const syncKey = 'zoom-deck:' + location.pathname.replace(/\/index\.html$/, '/');
   let chan = null;
-  try { chan = new BroadcastChannel('mise-zoom-deck'); chan.onmessage = e => { if (e.data && typeof e.data.step === 'number' && e.data.step !== idx) go(e.data.step, { remote: true }); }; } catch (e) { chan = null; }
+  function receive(state) {
+    if (!state || !Number.isInteger(state.step) || state.step < 0 || state.step >= STEPS.length || typeof state.view !== 'string') return;
+    if (state.step === idx && state.view === currentView()) return;
+    idx = state.step;
+    readView(state.view, { remote: true });
+  }
+  try { chan = new BroadcastChannel(syncKey); chan.onmessage = e => receive(e.data); } catch (e) { chan = null; }
   function broadcast() {
-    try { if (chan) chan.postMessage({ step: idx }); } catch (e) {}
-    try { localStorage.setItem('mise-zoom-step', String(idx) + ':' + Date.now()); } catch (e) {}
+    const state = { step: idx, view: currentView() };
+    try { if (chan) chan.postMessage(state); } catch (e) {}
+    try { localStorage.setItem(syncKey, JSON.stringify(state)); } catch (e) {}
   }
   window.addEventListener('storage', e => {
-    if (e.key !== 'mise-zoom-step' || !e.newValue) return;
-    const n = parseInt(e.newValue, 10);
-    if (!isNaN(n) && n !== idx) go(n, { remote: true });
+    if (e.key !== syncKey || !e.newValue) return;
+    try { receive(JSON.parse(e.newValue)); } catch (e) {}
   });
 
   // Input
@@ -893,7 +910,7 @@ body.presenter #pv {
     if (!picker.hidden && k === 'Escape') { closePicker(); count.focus(); return; }
     if (!picker.hidden && (k === 'ArrowDown' || k === 'ArrowUp')) {
       e.preventDefault();
-      const items = [...picker.children], at = items.indexOf(document.activeElement);
+      const items = [...picker.querySelectorAll('button')], at = items.indexOf(document.activeElement);
       const next = items[Math.max(0, Math.min(items.length - 1, (at < 0 ? idx : at) + (k === 'ArrowDown' ? 1 : -1)))];
       if (next) next.focus();
       return;
@@ -968,12 +985,30 @@ body.presenter #pv {
 
 
   window.addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
     const id = overview ? '__all' : (detour || STEPS[idx].id);
     cam = fit(worldRect(id), id === '__all' ? 1.02 : 1.08);
     apply(cam);
   });
 
-  go(0, { instant: true });
+  function readView(fragment, opts) {
+    const params = new URLSearchParams(fragment);
+    if (params.has('overview')) {
+      if (!overview) toggleOverview(opts);
+      return;
+    }
+    const id = params.get('slide');
+    const at = STEPS.findIndex(s => s.id === id);
+    if (at >= 0) go(at, opts);
+    else if (QUESTIONS.some(s => s.id === id)) sideTrip(id, opts);
+    else go(0, opts);
+  }
+  window.addEventListener('hashchange', () => readView(location.hash.slice(1)));
+  const resumePresenter = location.hash === '#presenter';
+  readView(location.hash.slice(1), { instant: true, remote: true });
+  if (resumePresenter) {
+    try { receive(JSON.parse(localStorage.getItem(syncKey))); } catch (e) {}
+  }
   wake();
 })();
 </script>
