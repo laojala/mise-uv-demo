@@ -11,7 +11,14 @@
 .yaml-joke { display: flex; flex: 1; min-height: 0; justify-content: center; }
 .yaml-joke img { width: 100%; height: 100%; object-fit: contain; border-radius: 16px; }
 </style>
-<title>mise and uv Zoom Deck — fact-checked</title>
+<title>Smooth project setup with mise and uv</title>
+<meta name="description" content="Talk slides from PyLadies Tampere, 19 November 2026: how mise pins Python, Node and Terraform per project and uv handles Python dependencies.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Smooth project setup with mise and uv">
+<meta property="og:description" content="Talk slides from PyLadies Tampere, 19 November 2026: how mise pins Python, Node and Terraform per project and uv handles Python dependencies.">
+<meta property="og:url" content="https://laojala.github.io/mise-uv-demo/">
+<meta property="og:image" content="https://laojala.github.io/mise-uv-demo/assets/cover.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 @font-face { font-family: 'Roboto Flex'; font-style: normal; font-display: swap; font-weight: 100 1000; font-stretch: 25% 151%; src: url(assets/roboto-flex.woff2) format('woff2'); }
 @font-face { font-family: 'Roboto Mono'; font-style: normal; font-display: swap; font-weight: 100 700; src: url(assets/roboto-mono.woff2) format('woff2'); }
@@ -1036,7 +1043,7 @@ body.mobile:not(.flow) #world video { pointer-events: none; }
   stage.addEventListener('pointercancel', endTouch);
 
   // Keep presenter and audience windows on the same view of this deck.
-  const syncKey = 'zoom-deck:' + location.pathname.replace(/\/index\.html$/, '/');
+  const syncKey = 'mise-uv-slides:' + location.pathname.replace(/\/index\.html$/, '/');
   let chan = null;
   function receive(state) {
     if (!state || !Number.isInteger(state.step) || state.step < 0 || state.step >= STEPS.length || typeof state.view !== 'string') return;
