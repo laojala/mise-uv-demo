@@ -6,7 +6,7 @@ uv manages the package and locked dependencies.
 
 ## Presentation
 
-[View the presentation](https://laojala.github.io/mise-uv-demo/).
+[View the presentation](https://laojala.github.io/mise-uv-demo/)
 
 Watch the 90-second demo:
 
