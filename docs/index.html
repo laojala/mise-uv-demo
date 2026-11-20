@@ -339,6 +339,12 @@ body.mobile.presenter #pv { display: none; }
     <p class="credit"><a href="https://xkcd.com/1987/">“Python Environment” by Randall Munroe</a> · <a href="https://creativecommons.org/licenses/by-nc/2.5/" rel="license">CC BY-NC 2.5</a></p>
   </section>
 
+  <section class="frame bare" id="f-hover" data-step style="left:400px; top:2820px; --s:1">
+    <p class="eyebrow">The comic’s hover text</p>
+    <div class="slot has-img"><img src="assets/xkcd-hover-text.png" alt="xkcd hover text: The Python environmental protection agency wants to seal it in a cement chamber, with pictorial messages to future civilizations warning them about the danger of using sudo to install random Python packages."></div>
+    <p><a href="https://xkcd.com/1987/">xkcd 1987 by Randall Munroe</a> · <a href="https://creativecommons.org/licenses/by-nc/2.5/" rel="license">CC BY-NC 2.5</a></p>
+  </section>
+
   <section class="frame" id="f-tax" data-step style="left:400px; top:3970px; --s:1">
     <p class="eyebrow">The old way</p>
     <h2>A new laptop used to mean a long list</h2>
@@ -350,6 +356,43 @@ body.mobile.presenter #pv { display: none; }
       <div class="card"><p class="tag">.env</p><h3>Set variables</h3><p>Copied from a teammate’s message</p></div>
       <div class="card"><p class="tag">README.md</p><h3>Follow the README</h3><p>Out of date by Friday</p></div>
     </div>
+  </section>
+
+  <section class="frame" id="f-cooks" data-step style="left:2200px; top:520px; --s:1">
+    <div class="row" style="flex:1; min-height:0">
+      <div class="col" style="flex:0 0 470px; justify-content:center; gap:28px">
+        <p class="eyebrow">Too many cooks</p>
+        <h2>The old way felt like this</h2>
+        <p class="lead">But there is hope</p>
+        <p>mise is named after mise-en-place: everything in its place before you start cooking</p>      </div>
+      <div class="slot has-img"><img src="assets/overcooked.webp" alt="Overcooked! 2: chefs juggling orders in a busy kitchen"></div>
+    </div>
+  </section>
+
+  <section class="frame" id="f-history" data-step style="left:2200px; top:1670px; --s:1">
+    <p class="eyebrow">New tools, built for speed</p>
+    <h2>What changed while I was away from active Python development</h2>
+    <div class="cards two">
+      <div class="card what">
+        <p class="tag">uv</p>
+        <h3>A much faster pip</h3>
+        <ul>
+          <li>Installs your project’s libraries</li>
+          <li>Locks resolved dependencies in uv.lock</li>
+          <li>Can even install Python itself</li>
+        </ul>
+      </div>
+      <div class="card what">
+        <p class="tag">mise</p>
+        <h3>A version manager for many languages</h3>
+        <ul>
+          <li>Python, Node, Terraform: the right version for each project</li>
+          <li>Runs project commands, like a Makefile</li>
+          <li>One file for a repo with Python, React and more</li>
+        </ul>
+      </div>
+    </div>
+    <p>uv installs your Python libraries. mise installs Python, Node and Terraform, and runs your commands.</p>
   </section>
 
   <section class="frame" id="f-laptop" data-step style="left:2200px; top:2820px; --s:1">
@@ -395,65 +438,6 @@ body.mobile.presenter #pv { display: none; }
       <div class="bar-num-wrap"><p class="bar-num">46k</p></div>
     </div>
     <p>Stars measure interest, not usage. pip is widely distributed with Python.</p>
-  </section>
-
-  <section class="frame bare" id="f-hover" data-step style="left:400px; top:2820px; --s:1">
-    <p class="eyebrow">The comic’s hover text</p>
-    <div class="slot has-img"><img src="assets/xkcd-hover-text.png" alt="xkcd hover text: The Python environmental protection agency wants to seal it in a cement chamber, with pictorial messages to future civilizations warning them about the danger of using sudo to install random Python packages."></div>
-    <p><a href="https://xkcd.com/1987/">xkcd 1987 by Randall Munroe</a> · <a href="https://creativecommons.org/licenses/by-nc/2.5/" rel="license">CC BY-NC 2.5</a></p>
-  </section>
-
-  <section class="frame" id="f-cooks" data-step style="left:2200px; top:520px; --s:1">
-    <div class="row" style="flex:1; min-height:0">
-      <div class="col" style="flex:0 0 470px; justify-content:center; gap:28px">
-        <p class="eyebrow">Too many cooks</p>
-        <h2>The old way felt like this</h2>
-        <p class="lead">But there is hope</p>
-        <p>mise is named after mise-en-place: everything in its place before you start cooking</p>      </div>
-      <div class="slot has-img"><img src="assets/overcooked.webp" alt="Overcooked! 2: chefs juggling orders in a busy kitchen"></div>
-    </div>
-  </section>
-
-  <section class="frame" id="f-yaml" data-step style="left:4100px; top:5750px; --s:1">
-    <div class="row" style="flex:1; min-height:0">
-      <div class="col" style="flex:0 0 470px; justify-content:center; gap:28px">
-        <p class="eyebrow">A confession</p>
-        <h2>I used to be a YAML developer</h2>
-        <p class="lead">mise.toml is TOML. No indentation rules to keep track of.</p>
-      </div>
-      <div class="col" style="min-height:0; gap:12px">
-        <a class="yaml-joke" href="https://www.reddit.com/r/ProgrammerHumor/comments/9fhvyl/writing_yaml/" target="_blank" rel="noopener">
-          <img src="assets/writing-yaml.webp" alt="A ruler and spirit level held against a laptop screen to align YAML indentation">
-        </a>
-        <p class="credit"><a href="https://www.reddit.com/r/ProgrammerHumor/comments/9fhvyl/writing_yaml/" target="_blank" rel="noopener">Writing YAML · r/ProgrammerHumor</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="frame" id="f-history" data-step style="left:2200px; top:1670px; --s:1">
-    <p class="eyebrow">New tools, built for speed</p>
-    <h2>What changed while I was away from active Python development</h2>
-    <div class="cards two">
-      <div class="card what">
-        <p class="tag">uv</p>
-        <h3>A much faster pip</h3>
-        <ul>
-          <li>Installs your project’s libraries</li>
-          <li>Locks resolved dependencies in uv.lock</li>
-          <li>Can even install Python itself</li>
-        </ul>
-      </div>
-      <div class="card what">
-        <p class="tag">mise</p>
-        <h3>A version manager for many languages</h3>
-        <ul>
-          <li>Python, Node, Terraform: the right version for each project</li>
-          <li>Runs project commands, like a Makefile</li>
-          <li>One file for a repo with Python, React and more</li>
-        </ul>
-      </div>
-    </div>
-    <p>uv installs your Python libraries. mise installs Python, Node and Terraform, and runs your commands.</p>
   </section>
 
   <div id="file-area" data-step>
@@ -591,6 +575,22 @@ body.mobile.presenter #pv { display: none; }
     </div>
   </div>
 
+  <section class="frame" id="f-yaml" data-step style="left:4100px; top:5750px; --s:1">
+    <div class="row" style="flex:1; min-height:0">
+      <div class="col" style="flex:0 0 470px; justify-content:center; gap:28px">
+        <p class="eyebrow">A confession</p>
+        <h2>I used to be a YAML developer</h2>
+        <p class="lead">mise.toml is TOML. No indentation rules to keep track of.</p>
+      </div>
+      <div class="col" style="min-height:0; gap:12px">
+        <a class="yaml-joke" href="https://www.reddit.com/r/ProgrammerHumor/comments/9fhvyl/writing_yaml/" target="_blank" rel="noopener">
+          <img src="assets/writing-yaml.webp" alt="A ruler and spirit level held against a laptop screen to align YAML indentation">
+        </a>
+        <p class="credit"><a href="https://www.reddit.com/r/ProgrammerHumor/comments/9fhvyl/writing_yaml/" target="_blank" rel="noopener">Writing YAML · r/ProgrammerHumor</a></p>
+      </div>
+    </div>
+  </section>
+
   <p class="region-label" style="left:7900px; top:300px">In practice</p>
 
   <section class="frame" id="f-stepzero" data-step style="left:7900px; top:520px; --s:1">
@@ -614,6 +614,109 @@ body.mobile.presenter #pv { display: none; }
     <p class="small">This repo’s postinstall hook runs <span class="mono">uv sync --locked</span> and installs the child folder’s Python.</p>
   </section>
 
+  <section class="frame" id="f-demo" data-step style="left:7900px; top:1670px; --s:1">
+    <p class="eyebrow">Live demo</p>
+    <h2>Clone the project and run the tests</h2>
+    <video controls playsinline preload="metadata" poster="assets/demo-preview.png" aria-label="Recorded mise and uv terminal demo" style="width:100%; min-height:0; flex:1; object-fit:contain; background:#191b1d; border-radius:16px">
+      <source src="assets/mise-uv-demo.mp4" type="video/mp4">
+      <a href="assets/mise-uv-demo.mp4">Watch the recorded terminal demo</a>
+    </video>
+    <p class="small">Recorded terminal demo · 1:30 · <a href="assets/mise-uv-demo.mp4" download>Download video</a></p>
+  </section>
+
+  <section class="frame" id="f-windows" data-step style="left:7900px; top:2820px; --s:1">
+    <p class="eyebrow">On Windows</p>
+    <h2>Works on Windows too</h2>
+    <div class="term">
+      <p class="c"># in PowerShell, no admin rights needed</p>
+      <p>irm https://mise.run/powershell | iex</p>
+      <p class="c"># or</p>
+      <p>winget install jdx.mise</p>
+    </div>
+    <div class="cards two">
+      <div class="card"><h3>Shared mise.toml</h3><p>Share the config across platforms. Task commands may need platform-specific changes.</p></div>
+      <div class="card"><h3>Use PowerShell 7</h3><p>Add one line to your profile and the venv switches on with cd</p></div>
+    </div>
+  </section>
+
+  <section class="frame" id="f-whennot" data-step style="left:7900px; top:3970px; --s:1">
+    <p class="eyebrow">Honest advice</p>
+    <h2>When uv alone is enough</h2>
+    <div class="cards two">
+      <div class="card"><p class="tag">skip mise</p><h3>uv is enough when</h3><p>The repo is pure Python, has no env vars to manage, and the team is happy</p></div>
+      <div class="card"><p class="tag">add mise</p><h3>mise earns its place when</h3><p>The project also needs Node or other tools, settings, shared commands, or quick onboarding</p></div>
+    </div>
+    <p class="lead">Start with uv. Add mise when the README grows.</p>
+  </section>
+
+  <section class="frame" id="f-compare" data-step style="left:7900px; top:5120px; --s:1">
+    <p class="eyebrow">Alternatives</p>
+    <h2>Other ways to get an easy setup</h2>
+    <table class="tbl alt">
+      <tr><th style="width:27%">Approach</th><th style="width:33%">Good when</th><th style="width:40%">Trade-off</th></tr>
+      <tr><td>uv alone <span class="yr">2024</span></td><td>The project is pure Python</td><td>Python only</td></tr>
+      <tr><td>Dev Containers <span class="yr">2019</span></td><td>You want everything in a container</td><td>Needs a container runtime</td></tr>
+      <tr><td>Nix <span class="yr">2003</span>, devbox <span class="yr">2022</span></td><td>You want declarative, reproducible environments</td><td>Steep learning curve</td></tr>
+      <tr><td>Jupyter <span class="yr">2014</span></td><td>Exploring data step by step</td><td>Not a setup: run it inside one, <span class="cmd">uv run --with jupyter jupyter lab</span></td></tr>
+      <tr><td>Anaconda <span class="yr">2012</span>, pixi <span class="yr">2023</span></td><td>Data science with native libraries</td><td>Separate ecosystem; mise can install Anaconda too</td></tr>
+      <tr class="divider"><td colspan="3">Older ways, still around</td></tr>
+      <tr class="old"><td>pyenv <span class="yr">2012</span></td><td>Switching Python versions</td><td>Compiles Python; mise and uv do this now</td></tr>
+      <tr class="old"><td>asdf <span class="yr">2014</span></td><td>Versions for many languages</td><td>mise started as a faster asdf</td></tr>
+    </table>
+  </section>
+
+  <section class="frame bare" id="f-onething" data-step style="left:9700px; top:520px; --s:1">
+    <p class="eyebrow">If you remember one thing</p>
+    <div class="spacer"></div>
+    <h1 class="statement">Tell AI the goal</h1>
+    <p>With today’s premium AI models, explain the outcome and constraints. Let the model propose the steps.</p>
+    <p class="lead">“Make this project easy for a new teammate to run”</p>
+    <p class="small">Ask why if it skips uv for Python or mise for a bigger monorepo</p>
+    <div class="spacer"></div>
+  </section>
+
+  <section class="frame bare" id="f-thanks" data-step style="left:9700px; top:1670px; --s:1">
+    <p class="eyebrow">Thank you</p>
+    <div class="row" style="flex:1; align-items:center">
+      <div class="col" style="gap:40px">
+        <h1 class="touch">Let’s stay in touch</h1>
+        <div class="links" style="grid-template-columns:1fr 1fr">
+          <div style="grid-column:1 / -1"><p class="tag">Me</p><p><a href="https://www.linkedin.com/in/lenniojala/" target="_blank" rel="noopener">Lenni Ojala · linkedin.com/in/lenniojala</a></p></div>
+          <div style="grid-column:1 / -1"><p class="tag">Slack</p><p>I hang out in <a href="https://koodiklinikka.fi/" target="_blank" rel="noopener">Koodiklinikka</a> and <a href="https://oslevelupkoodarit.github.io/" target="_blank" rel="noopener">OS Level Up</a></p></div>
+          <div style="grid-column:1 / -1"><p class="tag">Demo repo</p><p><a href="https://github.com/laojala/mise-uv-demo" target="_blank" rel="noopener">github.com/laojala/mise-uv-demo</a></p></div>
+          <div><p class="tag">mise</p><p><a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise.jdx.dev</a></p></div>
+          <div><p class="tag">uv</p><p><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">docs.astral.sh/uv</a></p></div>
+        </div>
+        <p class="disclaimer">I’m not affiliated with mise, uv or Astral, just a happy user. Views are my own.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="frame os" id="f-os" data-step style="left:9700px; top:2820px; --s:1">
+    <img class="os-logo" src="assets/level-up-logo.png" alt="Level Up Koodarit">
+    <div class="os-row">
+      <div class="os-text">
+        <p class="os-line"><a href="https://oslevelupkoodarit.github.io/" target="_blank" rel="noopener">OS Level Up</a>: the rogue and independent sibling of <a href="https://mimmitkoodaa.fi/in-english/" target="_blank" rel="noopener">Mimmit Koodaa</a></p>
+        <p class="os-pun">OS as in OmpeluSeura, the sewing circle. Or the operating system</p>
+        <p class="os-sub">Peer support for learning to code, in Finnish and English. Materials, meetups and visits to IT companies.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <p class="region-label" style="left:9700px; top:3960px; font-size:56px">For questions</p>
+
+  <section class="frame" id="f-gotchas" data-step style="left:9700px; top:4100px; --s:0.75">
+    <p class="eyebrow">Gotchas</p>
+    <h2>Common problems and fixes</h2>
+    <div class="cards">
+      <div class="card"><p class="tag">mise doctor</p><h3>Shims are not activation</h3><p>With shims alone the venv is not on PATH. Use mise activate.</p></div>
+      <div class="card"><p class="tag">UV_PYTHON</p><h3>Two tools want Python</h3><p>uv may pick a Python it downloaded. Point UV_PYTHON at mise’s.</p></div>
+      <div class="card"><p class="tag">mise sync python</p><h3>Old Pythons linger</h3><p>Reuse pyenv or uv installs, then delete what you don’t need</p></div>
+    </div>
+    <p class="small mono">UV_PYTHON = { value = "{{ tools.python.path }}", tools = true }</p>
+  </section>
+
   <section class="frame" id="f-runtime" data-step style="left:9700px; top:4900px; --s:0.75">
     <p class="eyebrow">Laptop, CI and production</p>
     <h2>Same mise.toml on your laptop and in CI</h2>
@@ -634,109 +737,6 @@ body.mobile.presenter #pv { display: none; }
     </div>
     <p class="small">Example excerpt. The demo repo pins actions by commit SHA.</p>
     <!-- Sources: https://github.com/jdx/mise-action ; https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepsuses ; https://docs.astral.sh/uv/guides/integration/docker/ ; https://developer.hashicorp.com/terraform/language/block/terraform#required_version -->
-  </section>
-
-  <section class="frame" id="f-windows" data-step style="left:7900px; top:2820px; --s:1">
-    <p class="eyebrow">On Windows</p>
-    <h2>Works on Windows too</h2>
-    <div class="term">
-      <p class="c"># in PowerShell, no admin rights needed</p>
-      <p>irm https://mise.run/powershell | iex</p>
-      <p class="c"># or</p>
-      <p>winget install jdx.mise</p>
-    </div>
-    <div class="cards two">
-      <div class="card"><h3>Shared mise.toml</h3><p>Share the config across platforms. Task commands may need platform-specific changes.</p></div>
-      <div class="card"><h3>Use PowerShell 7</h3><p>Add one line to your profile and the venv switches on with cd</p></div>
-    </div>
-  </section>
-
-  <section class="frame" id="f-demo" data-step style="left:7900px; top:1670px; --s:1">
-    <p class="eyebrow">Live demo</p>
-    <h2>Clone the project and run the tests</h2>
-    <video controls playsinline preload="metadata" poster="assets/demo-preview.png" aria-label="Recorded mise and uv terminal demo" style="width:100%; min-height:0; flex:1; object-fit:contain; background:#191b1d; border-radius:16px">
-      <source src="assets/mise-uv-demo.mp4" type="video/mp4">
-      <a href="assets/mise-uv-demo.mp4">Watch the recorded terminal demo</a>
-    </video>
-    <p class="small">Recorded terminal demo · 1:30 · <a href="assets/mise-uv-demo.mp4" download>Download video</a></p>
-  </section>
-
-  <section class="frame" id="f-gotchas" data-step style="left:9700px; top:4100px; --s:0.75">
-    <p class="eyebrow">Gotchas</p>
-    <h2>Common problems and fixes</h2>
-    <div class="cards">
-      <div class="card"><p class="tag">mise doctor</p><h3>Shims are not activation</h3><p>With shims alone the venv is not on PATH. Use mise activate.</p></div>
-      <div class="card"><p class="tag">UV_PYTHON</p><h3>Two tools want Python</h3><p>uv may pick a Python it downloaded. Point UV_PYTHON at mise’s.</p></div>
-      <div class="card"><p class="tag">mise sync python</p><h3>Old Pythons linger</h3><p>Reuse pyenv or uv installs, then delete what you don’t need</p></div>
-    </div>
-    <p class="small mono">UV_PYTHON = { value = "{{ tools.python.path }}", tools = true }</p>
-  </section>
-
-  <section class="frame bare" id="f-onething" data-step style="left:9700px; top:520px; --s:1">
-    <p class="eyebrow">If you remember one thing</p>
-    <div class="spacer"></div>
-    <h1 class="statement">Tell AI the goal</h1>
-    <p>With today’s premium AI models, explain the outcome and constraints. Let the model propose the steps.</p>
-    <p class="lead">“Make this project easy for a new teammate to run”</p>
-    <p class="small">Ask why if it skips uv for Python or mise for a bigger monorepo</p>
-    <div class="spacer"></div>
-  </section>
-
-  <p class="region-label" style="left:9700px; top:3960px; font-size:56px">For questions</p>
-
-  <section class="frame" id="f-compare" data-step style="left:7900px; top:5120px; --s:1">
-    <p class="eyebrow">Alternatives</p>
-    <h2>Other ways to get an easy setup</h2>
-    <table class="tbl alt">
-      <tr><th style="width:27%">Approach</th><th style="width:33%">Good when</th><th style="width:40%">Trade-off</th></tr>
-      <tr><td>uv alone <span class="yr">2024</span></td><td>The project is pure Python</td><td>Python only</td></tr>
-      <tr><td>Dev Containers <span class="yr">2019</span></td><td>You want everything in a container</td><td>Needs a container runtime</td></tr>
-      <tr><td>Nix <span class="yr">2003</span>, devbox <span class="yr">2022</span></td><td>You want declarative, reproducible environments</td><td>Steep learning curve</td></tr>
-      <tr><td>Jupyter <span class="yr">2014</span></td><td>Exploring data step by step</td><td>Not a setup: run it inside one, <span class="cmd">uv run --with jupyter jupyter lab</span></td></tr>
-      <tr><td>Anaconda <span class="yr">2012</span>, pixi <span class="yr">2023</span></td><td>Data science with native libraries</td><td>Separate ecosystem; mise can install Anaconda too</td></tr>
-      <tr class="divider"><td colspan="3">Older ways, still around</td></tr>
-      <tr class="old"><td>pyenv <span class="yr">2012</span></td><td>Switching Python versions</td><td>Compiles Python; mise and uv do this now</td></tr>
-      <tr class="old"><td>asdf <span class="yr">2014</span></td><td>Versions for many languages</td><td>mise started as a faster asdf</td></tr>
-    </table>
-  </section>
-
-  <section class="frame" id="f-whennot" data-step style="left:7900px; top:3970px; --s:1">
-    <p class="eyebrow">Honest advice</p>
-    <h2>When uv alone is enough</h2>
-    <div class="cards two">
-      <div class="card"><p class="tag">skip mise</p><h3>uv is enough when</h3><p>The repo is pure Python, has no env vars to manage, and the team is happy</p></div>
-      <div class="card"><p class="tag">add mise</p><h3>mise earns its place when</h3><p>The project also needs Node or other tools, settings, shared commands, or quick onboarding</p></div>
-    </div>
-    <p class="lead">Start with uv. Add mise when the README grows.</p>
-  </section>
-
-  <section class="frame os" id="f-os" data-step style="left:9700px; top:2820px; --s:1">
-    <img class="os-logo" src="assets/level-up-logo.png" alt="Level Up Koodarit">
-    <div class="os-row">
-      <div class="os-text">
-        <p class="os-line"><a href="https://oslevelupkoodarit.github.io/" target="_blank" rel="noopener">OS Level Up</a>: the rogue and independent sibling of <a href="https://mimmitkoodaa.fi/in-english/" target="_blank" rel="noopener">Mimmit Koodaa</a></p>
-        <p class="os-pun">OS as in OmpeluSeura, the sewing circle. Or the operating system</p>
-        <p class="os-sub">Peer support for learning to code, in Finnish and English. Materials, meetups and visits to IT companies.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="frame bare" id="f-thanks" data-step style="left:9700px; top:1670px; --s:1">
-    <p class="eyebrow">Thank you</p>
-    <div class="row" style="flex:1; align-items:center">
-      <div class="col" style="gap:40px">
-        <h1 class="touch">Let’s stay in touch</h1>
-        <div class="links" style="grid-template-columns:1fr 1fr">
-          <div style="grid-column:1 / -1"><p class="tag">Me</p><p><a href="https://www.linkedin.com/in/lenniojala/" target="_blank" rel="noopener">Lenni Ojala · linkedin.com/in/lenniojala</a></p></div>
-          <div style="grid-column:1 / -1"><p class="tag">Slack</p><p>I hang out in <a href="https://koodiklinikka.fi/" target="_blank" rel="noopener">Koodiklinikka</a> and <a href="https://oslevelupkoodarit.github.io/" target="_blank" rel="noopener">OS Level Up</a></p></div>
-          <div style="grid-column:1 / -1"><p class="tag">Demo repo</p><p><a href="https://github.com/laojala/mise-uv-demo" target="_blank" rel="noopener">github.com/laojala/mise-uv-demo</a></p></div>
-          <div><p class="tag">mise</p><p><a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise.jdx.dev</a></p></div>
-          <div><p class="tag">uv</p><p><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">docs.astral.sh/uv</a></p></div>
-        </div>
-        <p class="disclaimer">I’m not affiliated with mise, uv or Astral, just a happy user. Views are my own.</p>
-      </div>
-    </div>
   </section>
 
 </div>
